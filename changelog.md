@@ -2,9 +2,10 @@
 
 ### v2.0.0
 
-* Migrated to [League of Foundry Developers](https://discord.gg/gzemMfHURH)
+* Migrated to [League of Foundry Developers](https://discord.gg/gzemMfHURH) stewardship
 * Added Settings configuration in addition to the right-click context menu
 * Added export/import of player settings including differential based selection
+* Tested and bumped compatible core version to 0.8.0
 
 ### v1.1.1
 
