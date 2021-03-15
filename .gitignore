@@ -6,3 +6,4 @@ node_modules/
 foundry.js
 package.json
 /changelog.html
+.DS_Store

@@ -1,26 +1,44 @@
 {
   "name": "forien-copy-environment",
   "title": "Forien's Copy Environment",
-  "description": "Allows for copying TXT/JSON list of system/modules and versions, and gives ability to export/import game settings",
+  "description": "Allows for copying TXT/JSON list of system/modules and versions, and gives ability to export/import game and player settings",
+  "version": "2.0.0",
+  "library": "false",
+  "manifestPlusVersion": "1.0.0",
+  "minimumCoreVersion": "0.6.0",
+  "compatibleCoreVersion": "0.8.0",
   "author": "Forien — Forien#2130",
   "authors": [
     {
       "name": "Forien",
       "url": "https://www.patreon.com/forien"
+    },
+    {
+      "name": "The League of Extraordinary FVTT Developers",
+      "url": "https://github.com/League-of-Foundry-Developers"
+    },
+    {
+      "name": "Blair McMillan",
+      "url": "https://github.com/sneat",
+      "discord": "blair#9056"
     }
   ],
-  "version": "1.1.1",
-  "minimumCoreVersion": "0.6.0",
-  "compatibleCoreVersion": "0.7.1",
-  "url": "https://github.com/Forien/foundryvtt-forien-copy-environment",
-  "manifest": "https://raw.githubusercontent.com/Forien/foundryvtt-forien-copy-environment/master/module.json",
-  "download": "https://github.com/Forien/foundryvtt-forien-copy-environment/releases/download/v1.1.1/v1.1.1.zip",
-  "readme": "https://github.com/Forien/foundryvtt-forien-copy-environment/blob/v1.1.1/README.md",
-  "bugs": "https://github.com/Forien/foundryvtt-forien-copy-environment/issues",
   "esmodules": [
-    "./modules/init.js"
+    "/scripts/module.js"
   ],
-  "scripts": [
-    "./scripts/prompt.js"
-  ]
+  "styles": [
+    "/styles/module.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    }
+  ],
+  "url": "This is auto replaced",
+  "manifest": "This is auto replaced",
+  "download": "This is auto replaced",
+  "bugs": "https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues",
+  "allowBugReporter": true
 }

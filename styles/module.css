@@ -1,0 +1,13 @@
+@charset "UTF-8";
+.copy-environment-player-settings form .form-group .form-fields {
+  flex: 1;
+}
+.copy-environment-player-settings .tabs,
+.copy-environment-world-settings .tabs {
+  font-size: 14px;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid #000;
+}
+#forien-copy-environment-player-settings td.value {
+    word-break: break-all;
+}

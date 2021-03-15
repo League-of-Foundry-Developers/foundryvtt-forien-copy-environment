@@ -1,6 +1,13 @@
 # Changelog
 
+### v2.0.0
+
+* Migrated to [League of Foundry Developers](https://discord.gg/gzemMfHURH)
+* Added Settings configuration in addition to the right-click context menu
+* Added export/import of player settings including differential based selection
+
 ### v1.1.1
+
 * Added 0.6.6 compatibility 
 
 ## v1.1.0

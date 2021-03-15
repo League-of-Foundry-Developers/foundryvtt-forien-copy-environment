@@ -1,9 +1,11 @@
 # FoundryVTT - Forien's Copy Environment
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/forien/foundryvtt-forien-copy-environment?style=for-the-badge)
-![GitHub Releases](https://img.shields.io/github/downloads/Forien/foundryvtt-forien-copy-environment/latest/total?style=for-the-badge)
-![GitHub Releases](https://img.shields.io/github/downloads/Forien/foundryvtt-forien-copy-environment/total?style=for-the-badge)    
-**[Compatibility]**: *FoundryVTT* 0.6.0+  
-**[Systems]**: *any*  
+
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/League-of-Foundry-Developers/foundryvtt-forien-copy-environment) ![GitHub Releases](https://img.shields.io/github/downloads/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/latest/total) ![GitHub Releases](https://img.shields.io/github/downloads/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/total) ![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fforien-copy-environment&colorB=4aa94a) 
+
+**NOTE** This is an unofficial forked version of the module maintained by the League of Foundry Developers to provide module continuity while Forien is unavailable.
+
+**[Compatibility]**: *FoundryVTT* 0.7.0+
+**[Systems]**: *any*
 
 This module allows for fast copy/save environment data such as core version or list of installed modules and their versions. Supports copying as TXT or saving as JSON.
 
@@ -11,7 +13,7 @@ Module also allows to export (save/backup) current game settings and then import
 
 ## Installation
 
-1. Install Forien's Copy Environment using manifest URL: https://raw.githubusercontent.com/Forien/foundryvtt-forien-copy-environment/master/module.json
+1. Install Forien's Copy Environment using manifest URL: https://raw.githubusercontent.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/master/module.json
 2. While loaded in World, enable **_Forien's Copy Environment_** module.
 
 ### Usage
@@ -26,13 +28,14 @@ Go to Settings tab in Sidebar and **right click** on data **below** "General Inf
 * Save Environment (including manifest links) as a JSON file
 * Export game settings (both 'world' and 'client' scopes)
 * Import game settings ('client' ones, and if you are GM also 'world' ones)
+* Export player settings (such as player color and "dice" settings)
+* Import player settings (you will be able to choose which ones you want to import)
 
 *Please note that importing 'world' scope settings en masse as GM might cause some issues to connected players. I advise players should logout before attempt to import World Settings*
 
 ## Contact
 
-If you wish to contact me for any reason, reach me out on Discord using my tag: `Forien#2130`
-
+[League of Foundry Developers](https://discord.gg/gzemMfHURH) ~~If you wish to contact me for any reason, reach me out on Discord using my tag: `Forien#2130`~~
 
 ## Support
 
