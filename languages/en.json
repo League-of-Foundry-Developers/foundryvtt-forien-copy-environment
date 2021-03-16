@@ -1,56 +1,28 @@
 {
   "forien-copy-environment": {
-    "settings": {
-      "player-settings": {
-        "Name": "Player Settings",
-        "Label": "Import / Export Player Settings",
-        "Hint": "Import and Export your player settings, based on player Names across worlds."
-      },
-      "world": {
-        "Name": "World Settings",
-        "Label": "Import / Export World Settings",
-        "Hint": "Import and Export your world settings, including modules."
-      }
+    "menu": {
+      "copy": "Copy as text",
+      "save": "Save as JSON",
+      "export": "Export Settings",
+      "import": "Import Settings"
     },
-    "forms": {
-      "world": {
-        "title": "World Settings",
-        "environment": {
-          "tabTitle": "Environment",
-          "download": "Download",
-          "copy": "Copy to clipboard",
-          "copyIntro": "Copy environment to clipboard",
-          "intro": "Export world environment.",
-          "exportIntro": "Export environment.json",
-          "importIntro": "There is no import of the environment settings file as it is informational only. If you wish to import the modules you can do so by importing the World Settings."
-        },
-        "settings": {
-          "tabTitle": "Settings",
-          "download": "Download",
-          "intro": "Export world settings, including which modules are enabled/disabled.",
-          "exportIntro": "Export settings.json",
-          "importIntro": "Import settings.json"
-        }
-      },
-      "player-settings": {
-        "title": "Player Settings",
-        "import": {
-          "tabTitle": "Import",
-          "save": "Import player settings",
-          "playerList": "Import settings for the following players:",
-          "existing": "Import an existing Export:",
-          "property": "Property",
-          "newValue": "New Value",
-          "currentValue": "Current Value",
-          "notFound": "The following users in the import file do not exist in this world and will be skipped."
-        },
-        "export": {
-          "tabTitle": "Export",
-          "save": "Export player settings",
-          "playerList": "Export settings for the following players:"
-        },
-        "updateSuccess": "Updated player settings for: "
-      }
+    "title": "Import Settings",
+    "intro": "This form allows you to select which world and player settings you want to import.",
+    "message": "List generated with Forien's Copy Environment: https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",
+    "copiedToClipboard": "Environment data copied to clipboard!",
+    "updatedReloading": "Updated world settings. Reloading world in 5sec...",
+    "import": {
+      "save": "Import settings",
+      "playerList": "Import settings for the following players:",
+      "existing": "Import an existing Export:",
+      "property": "Property",
+      "newValue": "New Value",
+      "currentValue": "Current Value",
+      "notFound": "The following users in the import file do not exist in this world and will be skipped.",
+      "existingValue": "Existing values that are unchanged and will be skipped:",
+      "existingPlayerValues": "Existing players that are unchanged and will be skipped:",
+      "updatedPlayer": "Updated player settings for: {name}",
+      "noChanges": "There are no differences between the current world and the imported settings."
     }
   }
 }

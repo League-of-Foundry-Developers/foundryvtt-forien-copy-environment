@@ -1,0 +1,110 @@
+<form class="{{classes}}" autocomplete="off">
+  <h2>{{localize 'forien-copy-environment.intro'}}</h2>
+
+  {{#if hasWorldSettings}}
+  <fieldset name="input world" data-type="world">
+    <legend>World settings</legend>
+    <table>
+      <thead>
+        <th width="20%" class="property"><label><input type="checkbox" class="toggle-selections" checked>
+          {{localize 'forien-copy-environment.import.property'}}</label></th>
+        <th width="40%">{{localize 'forien-copy-environment.import.newValue'}}</th>
+        <th width="40%">{{localize 'forien-copy-environment.import.currentValue'}}</th>
+      </thead>
+      <tbody>
+        {{#each settings}}
+        <tr>
+          <td><label><input name="{{ key }}" id="world-{{@index}}" type="checkbox" data-for="{{ @index }}"
+                data-type="world" checked>{{ key }}</label></td>
+          <td class="value">
+            {{ difference.newString }}
+          </td>
+          <td class="value">
+            {{ difference.oldString }}
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </fieldset>
+  {{/if}}
+  {{#if notChangedSettings}}
+  <p><strong>{{localize 'forien-copy-environment.import.existingValue'}}</strong></p>
+  <ul>
+    {{#each notChangedSettings}}
+    <li>{{this}}</li>
+    {{/each}}
+  </ul>
+  {{/if}}
+
+  {{#if hasPlayerSettings}}
+  <p><strong>{{localize 'forien-copy-environment.import.playerList'}}</strong></p>
+  {{#each playerSettings}}
+  <fieldset name="input {{ name }}" data-type="player">
+    <legend>{{ name }}</legend>
+    <table>
+      <thead>
+        <th width="20%" class="property"><label><input type="checkbox" class="toggle-selections" checked>
+          {{localize 'forien-copy-environment.import.property'}}</label></th>
+        <th width="40%">{{localize 'forien-copy-environment.import.newValue'}}</th>
+        <th width="40%">{{localize 'forien-copy-environment.import.currentValue'}}</th>
+      </thead>
+      <tbody>
+        {{#each playerDifferences}}
+        <tr>
+          <td><label><input name="{{ name }}" id="core-{{@../index}}-{{@index}}" type="checkbox"
+                data-for="{{ @../index }}" data-type="core" checked>{{ name }}</label></td>
+          <td class="value">
+            {{ newString }}
+          </td>
+          <td class="value">
+            {{ oldString }}
+          </td>
+        </tr>
+        {{/each}}
+        {{#each playerFlagDifferences}}
+        <tr>
+          <td><label><input name="{{ name }}" type="checkbox" data-for="{{ @../index }}" data-type="flag"
+                checked>{{ name }}</label></td>
+          <td class="value">
+            {{ newString }}
+          </td>
+          <td class="value">
+            {{ oldString }}
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </fieldset>
+  {{/each}}
+  {{/if}}
+  
+  {{#if notChangedPlayers}}
+  <p><strong>{{localize 'forien-copy-environment.import.existingPlayerValues'}}</strong></p>
+  <ul>
+    {{#each notChangedPlayers}}
+    <li>{{this}}</li>
+    {{/each}}
+  </ul>
+  {{/if}}
+
+  {{#if notFoundPlayers}}
+  <p><strong>{{localize 'forien-copy-environment.import.notFound'}}</strong></p>
+  <ul>
+    {{#each notFoundPlayers}}
+    <li>{{ name }}</li>
+    {{/each}}
+  </ul>
+  {{/if}}
+
+  {{#unless hasChanges}}
+  <p><strong>{{localize 'forien-copy-environment.import.noChanges'}}</strong></p>
+  {{/unless}}
+
+  <div class="flexrow">
+    {{#if hasChanges}}<button type="button" class="import"><i class="fas fa-save"></i>
+      {{localize 'forien-copy-environment.import.save'}}</button>{{/if}}
+    <button type="button" class="close"><i class="fas fa-close"></i> {{localize 'Close'}}</button>
+  </div>
+</form>

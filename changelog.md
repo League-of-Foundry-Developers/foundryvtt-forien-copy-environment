@@ -1,5 +1,10 @@
 # Changelog
 
+### v2.0.1
+* Merged world and player settings into a single json to simplify use.
+* Added differential style selection for world settings import.
+* Finished adding localization support.
+
 ### v2.0.0
 
 * Migrated to [League of Foundry Developers](https://discord.gg/gzemMfHURH) stewardship
