@@ -1,5 +1,5 @@
-import { name, templates, log } from "./config.js";
-import Setting from "./setting.js";
+import {name, templates, log} from './config.js';
+import Setting from './setting.js';
 
 export default class Core extends FormApplication {
   /**
@@ -16,7 +16,7 @@ export default class Core extends FormApplication {
     this.notFoundPlayers = [];
 
     if (settings && Array.isArray(settings)) {
-      log(false, "Parsing provided settings", settings);
+      log(false, 'Parsing provided settings', settings);
 
       settings.forEach((data) => {
         try {
@@ -45,19 +45,19 @@ export default class Core extends FormApplication {
             }
           }
         } catch (e) {
-          log(false, "Error importing setting:", e, data);
+          log(false, 'Error importing setting:', e, data);
         }
       });
     }
 
-    log(false, "Processing world settings", this.settings);
-    log(false, "Processing player settings", this.playerSettings);
+    log(false, 'Processing world settings', this.settings);
+    log(false, 'Processing player settings', this.playerSettings);
   }
 
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      classes: ["copy-environment-settings"],
-      height: "auto",
+      classes: ['copy-environment-settings'],
+      height: 'auto',
       width: Math.ceil(window.innerWidth / 2),
       id: `${name}-settings`,
       title: `${name}.title`,
@@ -81,29 +81,29 @@ export default class Core extends FormApplication {
   activateListeners(html) {
     super.activateListeners(html);
 
-    html.on("click", ".close", () => {
+    html.on('click', '.close', () => {
       this.close();
     });
 
-    html.on("change", ".toggle-selections", (el) => {
-      $(el.target.closest("fieldset"))
-        .find("td input")
-        .prop("checked", el.target.checked);
+    html.on('change', '.toggle-selections', (el) => {
+      $(el.target.closest('fieldset'))
+        .find('td input')
+        .prop('checked', el.target.checked);
     });
 
-    html.on("click", ".import", () => {
-      for (let field of this.form.getElementsByTagName("fieldset")) {
+    html.on('click', '.import', () => {
+      for (let field of this.form.getElementsByTagName('fieldset')) {
         let targetType = field.dataset?.type;
         if (!targetType) {
-          log(false, "Could not find fieldset target type");
+          log(false, 'Could not find fieldset target type');
           continue;
         }
 
         switch (targetType) {
-          case "world":
+          case 'world':
             this.importWorldSettings(field);
             break;
-          case "player":
+          case 'player':
             this.importPlayerSettings(field);
             break;
         }
@@ -122,17 +122,17 @@ export default class Core extends FormApplication {
 
       let target = input.dataset?.for;
       if (!this.settings[target]) {
-        log(false, "Import world settings: could not find target for", input);
+        log(false, 'Import world settings: could not find target for', input);
         continue;
       }
 
-      log(false, "Importing world setting", this.settings[target]);
+      log(false, 'Importing world setting', this.settings[target]);
       changes.push(this.settings[target]);
     }
     if (changes.length) {
       Core.processSettings(changes).then(() => {
         ui.notifications.info(
-          game.i18n.localize("forien-copy-environment.updatedReloading"),
+          game.i18n.localize('forien-copy-environment.updatedReloading'),
           {}
         );
         window.setTimeout(window.location.reload.bind(window.location), 5000);
@@ -152,13 +152,13 @@ export default class Core extends FormApplication {
 
       let target = input.dataset?.for;
       if (!this.playerSettings[target]) {
-        log(false, "Import player settings: could not find target for", input);
+        log(false, 'Import player settings: could not find target for', input);
         continue;
       }
 
       let type = input.dataset?.type;
       if (!type) {
-        log(false, "Import player settings: missing type (core or flag)");
+        log(false, 'Import player settings: missing type (core or flag)');
         continue;
       }
 
@@ -166,26 +166,22 @@ export default class Core extends FormApplication {
         targetUser = game.users.getName(this.playerSettings[target].name);
       }
 
-      if (type === "core") {
-        changes[input.name] = this.playerSettings[target].playerDifferences[
-          input.name
-        ].newVal;
+      if (type === 'core') {
+        changes[input.name] = this.playerSettings[target].playerDifferences[input.name].newVal;
       }
 
-      if (type === "flag") {
-        changes.flags[input.name] = this.playerSettings[
-          target
-        ].playerFlagDifferences[input.name].newVal;
+      if (type === 'flag') {
+        changes.flags[input.name] = this.playerSettings[target].playerFlagDifferences[input.name].newVal;
       }
     }
 
     if (!targetUser) {
-      log(false, "No targetUser found.");
+      log(false, 'No targetUser found.');
       return;
     }
 
     if (Object.keys(changes).length === 1 && isObjectEmpty(changes.flags)) {
-      log(false, "No changes selected for", targetUser?.name);
+      log(false, 'No changes selected for', targetUser?.name);
       return;
     }
 
@@ -193,7 +189,7 @@ export default class Core extends FormApplication {
     targetUser.update(changes);
 
     ui.notifications.info(
-      game.i18n.format("forien-copy-environment.import.updatedPlayer", {
+      game.i18n.format('forien-copy-environment.import.updatedPlayer', {
         name: targetUser.name,
       }),
       {}
@@ -202,13 +198,13 @@ export default class Core extends FormApplication {
 
   static download(data, filename) {
     if (!filename) {
-      log(false, "Missing filename on download request");
+      log(false, 'Missing filename on download request');
       return;
     }
 
     let jsonStr = JSON.stringify(data, null, 2);
 
-    saveDataToFile(jsonStr, "application/json", filename);
+    saveDataToFile(jsonStr, 'application/json', filename);
   }
 
   static data() {
@@ -216,7 +212,7 @@ export default class Core extends FormApplication {
     let system = game.data.system;
     let core = game.data.version;
 
-    let message = game.i18n.localize("forien-copy-environment.message");
+    let message = game.i18n.localize('forien-copy-environment.message');
 
     return {
       message,
@@ -247,18 +243,18 @@ export default class Core extends FormApplication {
   static copyAsText() {
     let text = this.getText();
 
-    const el = document.createElement("textarea");
+    const el = document.createElement('textarea');
     el.value = text;
-    el.setAttribute("readonly", "");
-    el.style.position = "absolute";
-    el.style.left = "-9999px";
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
     document.body.appendChild(el);
     el.select();
-    document.execCommand("copy");
+    document.execCommand('copy');
     document.body.removeChild(el);
 
     ui.notifications.info(
-      game.i18n.localize("forien-copy-environment.copiedToClipboard"),
+      game.i18n.localize('forien-copy-environment.copiedToClipboard'),
       {}
     );
   }
@@ -284,7 +280,7 @@ export default class Core extends FormApplication {
       };
     });
 
-    this.download(data, "foundry-environment.json");
+    this.download(data, 'foundry-environment.json');
   }
 
   static exportGameSettings() {
@@ -305,19 +301,19 @@ export default class Core extends FormApplication {
         flags: u.data.flags,
       }))
     );
-    this.download(data, "foundry-settings-export.json");
+    this.download(data, 'foundry-settings-export.json');
   }
 
   static importGameSettingsQuick() {
     const input = $('<input type="file">');
-    input.on("change", this.importGameSettings);
-    input.trigger("click");
+    input.on('change', this.importGameSettings);
+    input.trigger('click');
   }
 
   static importGameSettings() {
     const file = this.files[0];
     if (!file) {
-      log(false, "No file provided for game settings importer.");
+      log(false, 'No file provided for game settings importer.');
       return;
     }
 
@@ -327,7 +323,7 @@ export default class Core extends FormApplication {
         let coreSettings = new Core(settings);
         coreSettings.render(true);
       } catch (e) {
-        log(false, "Could not parse import data.");
+        log(false, 'Could not parse import data.');
       }
     });
   }
@@ -335,14 +331,14 @@ export default class Core extends FormApplication {
   static async processSettings(settings) {
     for (const setting of settings) {
       const config = game.settings.settings.get(setting.key);
-      if (config?.scope === "client") {
+      if (config?.scope === 'client') {
         const storage = game.settings.storage.get(config.scope);
         storage.setItem(setting.key, setting.value);
       } else if (game.user.isGM) {
         try {
-          await SocketInterface.dispatch("modifyDocument", {
-            type: "Setting",
-            action: "update",
+          await SocketInterface.dispatch('modifyDocument', {
+            type: 'Setting',
+            action: 'update',
             data: setting,
           });
         } catch (e) {

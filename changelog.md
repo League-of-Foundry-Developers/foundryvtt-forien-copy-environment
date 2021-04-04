@@ -1,6 +1,11 @@
 # Changelog
 
+### v2.0.2
+
+* Tested 0.8.1 compatibility
+
 ### v2.0.1
+
 * Merged world and player settings into a single json to simplify use.
 * Added differential style selection for world settings import.
 * Finished adding localization support.

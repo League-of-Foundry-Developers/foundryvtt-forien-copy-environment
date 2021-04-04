@@ -1,4 +1,4 @@
-import { log } from "./config.js";
+import {log} from './config.js';
 
 export default class Setting {
   /**
@@ -9,8 +9,8 @@ export default class Setting {
     this.data = data;
     this.value = undefined;
 
-    if (!data || typeof data !== "object") {
-      log(false, "Unknown setting received:", data);
+    if (!data || typeof data !== 'object') {
+      log(false, 'Unknown setting received:', data);
       return this;
     }
 
@@ -23,9 +23,9 @@ export default class Setting {
     }
   }
 
-  static UnknownType = "_unknownType";
-  static PlayerType = "_playerType";
-  static WorldType = "_worldType";
+  static UnknownType = '_unknownType';
+  static PlayerType = '_playerType';
+  static WorldType = '_worldType';
 
   isWorldSetting() {
     return this.type === Setting.WorldType;
@@ -54,7 +54,7 @@ export class WorldSetting {
    */
   constructor(setting) {
     if (!setting) {
-      throw "Invalid data";
+      throw 'Invalid data';
     }
 
     this.key = setting.key;
@@ -71,7 +71,7 @@ export class WorldSetting {
    * @returns {Difference}
    */
   calculateDifference() {
-    let existingSettings = game.data.settings.find((s) => s.key == this.key);
+    let existingSettings = game.data.settings.find((s) => s.key === this.key);
     try {
       // World settings are stored as JSON strings, try to determine if they are
       // objects that can be compared, rather than string representations.
@@ -83,7 +83,7 @@ export class WorldSetting {
       if (newValue) {
         newValue = JSON.parse(newValue);
       }
-      if (typeof existingValue === "object" && typeof newValue === "object") {
+      if (typeof existingValue === 'object' && typeof newValue === 'object') {
         let diff = diffObject(existingValue, newValue);
         if (isObjectEmpty(diff)) {
           // No difference in the underlying object.
@@ -91,7 +91,7 @@ export class WorldSetting {
         }
       }
     } catch (e) {
-      log(false, "Could not parse world setting values:", e, this.key);
+      log(false, 'Could not parse world setting values:', e, this.key);
     }
 
     // Return the difference of the original values, not the parsed values.
@@ -109,7 +109,7 @@ export class PlayerSetting {
    */
   constructor(setting) {
     if (!setting) {
-      throw "Invalid data";
+      throw 'Invalid data';
     }
 
     this.name = setting.name;
@@ -125,7 +125,7 @@ export class PlayerSetting {
 
     if (setting.core.color !== existingUser.data.color) {
       this.playerDifferences.color = new Difference(
-        "color",
+        'color',
         existingUser.data.color,
         setting.core.color
       );
@@ -133,7 +133,7 @@ export class PlayerSetting {
 
     if (setting.core.role !== existingUser.data.role) {
       this.playerDifferences.role = new Difference(
-        "role",
+        'role',
         existingUser.data.role,
         setting.core.role
       );
@@ -144,7 +144,7 @@ export class PlayerSetting {
       JSON.stringify(existingUser.data.permissions)
     ) {
       this.playerDifferences.permissions = new Difference(
-        "permissions",
+        'permissions',
         existingUser.data.permissions,
         this.data.core.permissions
       );
@@ -175,7 +175,7 @@ export class PlayerSetting {
   }
 
   /**
-   * Returns whehter this player setting has the same data values as a player of the same name in the current world.
+   * Returns whether this player setting has the same data values as a player of the same name in the current world.
    * Note that if there is not a matching player, there are no data changes.
    * @see hasChanges
    * @returns boolean

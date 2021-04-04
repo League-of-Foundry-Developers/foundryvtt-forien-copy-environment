@@ -28,11 +28,9 @@ Go to Settings tab in Sidebar and **right click** on data **below** "General Inf
 * Copy Environment (core, system and module versions) to clipboard
 * Save Environment (including manifest links) as a JSON file
 * Export game settings (both 'world' and 'client' scopes)
-* Import game settings ('client' ones, and if you are GM also 'world' ones)
-* Export player settings (such as player color and "dice" settings)
-* Import player settings (you will be able to choose which ones you want to import)
+* Import game settings ('client' ones, and if you are GM also 'world' ones - you will be able to choose which ones you want to import)
 
-*Please note that importing 'world' scope settings en masse as GM might cause some issues to connected players. I advise players should logout before attempt to import World Settings*
+*Please note that importing 'world' scope settings en masse as GM might cause some issues to connected players. I advise players should logout before attempting to import World Settings*
 
 ## Contact
 

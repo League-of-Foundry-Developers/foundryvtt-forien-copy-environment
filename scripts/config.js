@@ -1,4 +1,4 @@
-export const name = "forien-copy-environment";
+export const name = 'forien-copy-environment';
 
 export const templates = {
   settings: `modules/${name}/templates/settings.html`,
@@ -18,5 +18,6 @@ export function log(force, ...args) {
     if (force || isDebugging) {
       console.log("Copy Environment |", ...args);
     }
-  } catch (e) {}
+  } catch (e) {
+  }
 }

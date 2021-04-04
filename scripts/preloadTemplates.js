@@ -1,4 +1,4 @@
-import { templates } from "./config.js";
+import {templates} from './config.js';
 
 export const preloadTemplates = async function () {
   return loadTemplates(
