@@ -5,7 +5,8 @@
 
 **NOTE** This is an unofficial forked version of the module maintained by the League of Foundry Developers to provide module continuity while Forien is unavailable.
 
-**[Compatibility]**: *FoundryVTT* 0.7.0+
+**[Compatibility]**: *FoundryVTT* 0.6.0 - 0.8.0+
+
 **[Systems]**: *any*
 
 This module allows for fast copy/save environment data such as core version or list of installed modules and their versions. Supports copying as TXT or saving as JSON.

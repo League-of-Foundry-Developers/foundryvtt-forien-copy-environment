@@ -1,5 +1,9 @@
 # Changelog
 
+### v2.0.3
+
+* Added 0.8.4 compatibility
+
 ### v2.0.2
 
 * Tested 0.8.1 compatibility
