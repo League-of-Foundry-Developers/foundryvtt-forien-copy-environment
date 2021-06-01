@@ -8,7 +8,7 @@
     },
     "title": "インポート設定",
     "intro": "このフォームでは、ワールドとプレイヤーのどの設定をインポートするかを選択します。",
-    "message": "このリストはForien's Copy Environmentで作成されました： https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",
+    "message": "このリストは「Forien's Copy Environment」で作成されました： https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",
     "copiedToClipboard": "環境データをクリップボードにコピーしました！",
     "updatedReloading": "ワールド設定を更新しました。5秒後に再読み込みします……",
     "import": {
