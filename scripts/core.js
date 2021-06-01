@@ -133,7 +133,7 @@ export default class Core extends FormApplication {
       Core.processSettings(changes).then(() => {
         ui.notifications.info(
           game.i18n.localize('forien-copy-environment.updatedReloading'),
-          {}
+          {},
         );
         window.setTimeout(window.location.reload.bind(window.location), 5000);
       });
@@ -192,7 +192,7 @@ export default class Core extends FormApplication {
       game.i18n.format('forien-copy-environment.import.updatedPlayer', {
         name: targetUser.name,
       }),
-      {}
+      {},
     );
   }
 
@@ -255,7 +255,7 @@ export default class Core extends FormApplication {
 
     ui.notifications.info(
       game.i18n.localize('forien-copy-environment.copiedToClipboard'),
-      {}
+      {},
     );
   }
 
@@ -299,7 +299,7 @@ export default class Core extends FormApplication {
           role: u.data.role,
         },
         flags: u.data.flags,
-      }))
+      })),
     );
     this.download(data, 'foundry-settings-export.json');
   }
@@ -329,6 +329,50 @@ export default class Core extends FormApplication {
   }
 
   static async processSettings(settings) {
+    if (isNewerVersion(game.data.version, '0.7.9')) {
+      const updates = [];
+      const creates = [];
+      settings.forEach(data => {
+        const config = game.settings.settings.get(data.key);
+        if (config?.scope === 'client') {
+          const storage = game.settings.storage.get(config.scope);
+          if (storage) {
+            storage.setItem(setting.key, setting.value);
+          }
+        } else if (game.user.isGM) {
+          const existing = game.data.settings.find((s) => s.key === data.key);
+          if (existing?._id) {
+            data._id = existing._id;
+            updates.push(data);
+          } else {
+            creates.push(data);
+          }
+        }
+      });
+      try {
+        if (updates.length) {
+          await SocketInterface.dispatch('modifyDocument', {
+            type: 'Setting',
+            action: 'update',
+            updates: updates,
+          });
+        }
+        if (creates.length) {
+          await SocketInterface.dispatch('modifyDocument', {
+            type: 'Setting',
+            action: 'create',
+            data: creates,
+          });
+        }
+      } catch (e) {
+        log(
+          false,
+          `Settings update could not be dispatched to server.`,
+        );
+        console.error(e);
+      }
+      return;
+    }
     for (const setting of settings) {
       const config = game.settings.settings.get(setting.key);
       if (config?.scope === 'client') {
@@ -344,7 +388,7 @@ export default class Core extends FormApplication {
         } catch (e) {
           log(
             false,
-            `Setting key ${setting.key} could not be dispatched to server.`
+            `Setting key ${setting.key} could not be dispatched to server.`,
           );
           console.error(e);
         }
