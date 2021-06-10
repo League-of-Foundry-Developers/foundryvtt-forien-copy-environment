@@ -1,5 +1,10 @@
 # Changelog
 
+### v2.0.4
+
+* Allow module developers to opt out of settings being copied.
+* Re-added bug reporter compatibility since 0.8.2.
+
 ### v2.0.3
 
 * Added 0.8.4 compatibility
