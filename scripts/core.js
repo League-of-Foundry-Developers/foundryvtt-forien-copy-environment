@@ -284,9 +284,11 @@ export default class Core extends FormApplication {
   }
 
   static exportGameSettings() {
+    const excludeModules = game.data.modules.filter(m => m.data?.flags?.noCopyEnvironmentSettings).map(m => m.id) || [];
+
     // Return an array with both the world settings and player settings together.
     let data = Array.prototype.concat(
-      game.data.settings.map((s) => ({
+      game.data.settings.filter(s => !excludeModules.some(e => s.key.startsWith(`${e}.`))).map((s) => ({
         key: s.key,
         value: s.value,
       })),

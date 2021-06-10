@@ -33,6 +33,21 @@ Go to Settings tab in Sidebar and **right click** on data **below** "General Inf
 
 *Please note that importing 'world' scope settings en masse as GM might cause some issues to connected players. I advise players should logout before attempting to import World Settings*
 
+## Info for Module Developers
+
+### How do I opt out?
+
+Perhaps you have a module that you don't want the settings being copied between worlds. You can add the following to your module manifest file to opt out of having the settings copied. The `active` state of your module will still be copied, just the settings won't.
+
+1. Add `noCopyEnvironmentSettings: true` to your manifest json inside of the `flags` field of the manifest.
+
+module.json
+```md
+  "flags": {
+    "noCopyEnvironmentSettings": true
+  }
+```
+
 ## Contact
 
 [League of Foundry Developers](https://discord.gg/gzemMfHURH) ~~If you wish to contact me for any reason, reach me out on Discord using my tag: `Forien#2130`~~
