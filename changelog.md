@@ -1,5 +1,9 @@
 # Changelog
 
+### v2.0.5
+
+* Fix client side settings not importing in v0.8.x
+
 ### v2.0.4
 
 * Allow module developers to opt out of settings being copied.

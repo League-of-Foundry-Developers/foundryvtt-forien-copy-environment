@@ -2,11 +2,11 @@
   "name": "forien-copy-environment",
   "title": "Forien's Copy Environment",
   "description": "Allows for copying TXT/JSON list of system/modules and versions, and gives ability to export/import game and player settings",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "library": "false",
   "manifestPlusVersion": "1.0.0",
   "minimumCoreVersion": "0.6.0",
-  "compatibleCoreVersion": "0.8.6",
+  "compatibleCoreVersion": "0.8.8",
   "author": "Forien — Forien#2130",
   "authors": [
     {
