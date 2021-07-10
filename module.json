@@ -2,11 +2,11 @@
   "name": "forien-copy-environment",
   "title": "Forien's Copy Environment",
   "description": "Allows for copying TXT/JSON list of system/modules and versions, and gives ability to export/import game and player settings",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "library": "false",
   "manifestPlusVersion": "1.0.0",
   "minimumCoreVersion": "0.6.0",
-  "compatibleCoreVersion": "0.8.4",
+  "compatibleCoreVersion": "0.8.8",
   "author": "Forien — Forien#2130",
   "authors": [
     {
@@ -44,5 +44,8 @@
   "download": "https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/releases/latest/download/module.zip",
   "bugs": "https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues",
   "changelog": "https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/blob/master/changelog.md",
+  "flags": {
+    "allowBugReporter": true
+  },
   "allowBugReporter": true
 }

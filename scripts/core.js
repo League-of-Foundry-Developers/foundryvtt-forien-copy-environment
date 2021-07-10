@@ -284,9 +284,11 @@ export default class Core extends FormApplication {
   }
 
   static exportGameSettings() {
+    const excludeModules = game.data.modules.filter(m => m.data?.flags?.noCopyEnvironmentSettings).map(m => m.id) || [];
+
     // Return an array with both the world settings and player settings together.
     let data = Array.prototype.concat(
-      game.data.settings.map((s) => ({
+      game.data.settings.filter(s => !excludeModules.some(e => s.key.startsWith(`${e}.`))).map((s) => ({
         key: s.key,
         value: s.value,
       })),
@@ -337,7 +339,7 @@ export default class Core extends FormApplication {
         if (config?.scope === 'client') {
           const storage = game.settings.storage.get(config.scope);
           if (storage) {
-            storage.setItem(setting.key, setting.value);
+            storage.setItem(data.key, data.value);
           }
         } else if (game.user.isGM) {
           const existing = game.data.settings.find((s) => s.key === data.key);
