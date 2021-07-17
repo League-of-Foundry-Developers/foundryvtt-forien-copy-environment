@@ -1,0 +1,28 @@
+{
+  "forien-copy-environment": {
+    "menu": {
+      "copy": "クリップボードにコピー",
+      "save": "JSONに保存",
+      "export": "設定のエクスポート",
+      "import": "設定のインポート"
+    },
+    "title": "インポート設定",
+    "intro": "このフォームでは、ワールドとプレイヤーのどの設定をインポートするかを選択します。",
+    "message": "このリストは「Forien's Copy Environment」で作成されました： https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",
+    "copiedToClipboard": "環境データをクリップボードにコピーしました！",
+    "updatedReloading": "ワールド設定を更新しました。5秒後に再読み込みします……",
+    "import": {
+      "save": "インポート設定",
+      "playerList": "次のプレイヤー設定をインポートします：",
+      "existing": "既存のエクスポートをインポートします：",
+      "property": "プロパティ",
+      "newValue": "新しい値",
+      "currentValue": "現在の値",
+      "notFound": "インポートファイルに含まれる次のユーザーは、このワールドに存在しないため、スキップされます。",
+      "existingValue": "次の値は変更がないためスキップされます：",
+      "existingPlayerValues": "次のプレイヤーは変更がないためスキップされます：",
+      "updatedPlayer": "次のプレイヤーの設定を更新しました：{name}",
+      "noChanges": "現在のワールド設定とインポートした設定に差異がありません。"
+    }
+  }
+}
