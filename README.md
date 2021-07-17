@@ -53,6 +53,10 @@ module.json
 
 [League of Foundry Developers](https://discord.gg/gzemMfHURH) ~~If you wish to contact me for any reason, reach me out on Discord using my tag: `Forien#2130`~~
 
+## Translations
+
+- Japanese by touge
+
 ## Support
 
 If you wish to support module development, please consider [becoming Patron](https://www.patreon.com/foundryworkshop) or donating [through Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6P2RRX7HVEMV2&source=url). Thanks!
