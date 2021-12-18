@@ -12,6 +12,7 @@
     "copiedToClipboard": "Environment data copied to clipboard!",
     "updatedReloading": "Updated world settings. Reloading world in 5sec...",
     "import": {
+      "title": "World settings",
       "save": "Import settings",
       "playerList": "Import settings for the following players:",
       "existing": "Import an existing Export:",

@@ -1,6 +1,11 @@
 # Changelog
 
-### v2.0.5
+### v2.0.7
+
+* Added German translation thanks to brockhaus
+* Added Foundry VTT Core v9 compatibility
+
+### v2.0.6
 
 * Added Japanese translation thanks to touge
 

@@ -3,7 +3,7 @@
 
   {{#if hasWorldSettings}}
   <fieldset name="input world" data-type="world">
-    <legend>World settings</legend>
+    <legend>{{localize 'forien-copy-environment.import.title'}}</legend>
     <table>
       <thead>
         <th width="20%" class="property"><label><input type="checkbox" class="toggle-selections" checked>
@@ -79,7 +79,7 @@
   </fieldset>
   {{/each}}
   {{/if}}
-  
+
   {{#if notChangedPlayers}}
   <p><strong>{{localize 'forien-copy-environment.import.existingPlayerValues'}}</strong></p>
   <ul>
