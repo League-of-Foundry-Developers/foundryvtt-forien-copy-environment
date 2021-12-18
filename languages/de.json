@@ -1,0 +1,28 @@
+{
+  "forien-copy-environment": {
+    "menu": {
+      "copy": "Als Text kopieren",
+      "save": "Als JSON abspeichern",
+      "export": "Einstellungen exportieren",
+      "import": "Einstellungen importieren"
+    },
+    "title": "Einstellungen importieren",
+    "intro": "Bitte wähle aus, welche Welt- und Spieler-Einstellungen Du importieren möchtest.",
+    "message": "Die Liste wurde generiert mit Forien's Copy Environment: https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",
+    "copiedToClipboard": "System Daten wurden in die Zwischenablage kopiert.",
+    "updatedReloading": "Einstellungen der Welt erneuert. Lade die Welt in 5 Sekunden neu...",
+    "import": {
+      "save": "Import Einstellungen",
+      "playerList": "Importiere die Einstellungen der folgenden Spieler:",
+      "existing": "Importiere einen existierenden Export:",
+      "property": "Eigenschaft",
+      "newValue": "Neuer Wert",
+      "currentValue": "Aktueller Wert",
+      "notFound": "Die folgenden Spieler in der Import Datei existieren nicht in dieser Welt und werden ausgelassen.",
+      "existingValue": "Bereits existierende Einstellungen, die unverändert sind und deshalb ausgelassen werden:",
+      "existingPlayerValues": "Bereits existierende Spieler, die unverändert sind und deshalb ausgelassen werden:",
+      "updatedPlayer": "Spieler Einstellungen angepasst für: {name}",
+      "noChanges": "Es gibt keinen Unterschied zwischen der aktuellen Welt und den zu importierenden Einstellungen."
+    }
+  }
+}
