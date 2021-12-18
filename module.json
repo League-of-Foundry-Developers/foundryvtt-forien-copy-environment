@@ -44,7 +44,12 @@
       "lang": "ja",
       "name": "日本語",
       "path": "languages/ja.json"
-    }
+    },
+    {
+      "lang": "de",
+      "name": "Deutsch",
+      "path": "languages/de.json"
+    }    
   ],
   "packs": [],
   "system": [],
