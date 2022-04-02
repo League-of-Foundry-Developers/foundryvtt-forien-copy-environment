@@ -1,4 +1,4 @@
-import {name, templates, log} from './config.js';
+import {name, isV10orNewer, templates, log} from './config.js';
 import Setting from './setting.js';
 
 export default class Core extends FormApplication {
@@ -386,33 +386,37 @@ export default class Core extends FormApplication {
   }
 
   static exportGameSettings() {
-    const excludeModules =
-      game.data.modules
-        .filter((m) => m.data?.flags?.noCopyEnvironmentSettings)
-        .map((m) => m.id) || [];
+    const excludeModules = game.data.modules.filter((m) => m.data?.flags?.noCopyEnvironmentSettings).map((m) => m.id) || [];
 
     // Return an array with both the world settings and player settings together.
     let data = Array.prototype.concat(
       Array.from(game.settings.settings)
-        .filter(([k, v]) =>
-            !excludeModules.some((e) => v.namespace === e) &&
-            game.settings.get(v.namespace, v.key) !== v.default
-        )
+        .filter(([k, v]) => {
+          const value = game.settings.get(v.namespace, v.key);
+          let sameValue = value === v.default;
+          if (typeof value === 'object' && typeof v.default === 'object') {
+            sameValue = !Object.keys(diffObject(value, v.default)).length;
+          }
+          return !excludeModules.some((e) => v.namespace === e) && !sameValue;
+        })
         .map(([k, v]) => ({
           key: k,
           value: JSON.stringify(game.settings.get(v.namespace, v.key)),
         }))
         .sort((a, b) => a.key.localeCompare(b.key)),
-      game.users.map((u) => ({
-        name: u.data.name,
-        core: {
-          avatar: u.data.avatar,
-          color: u.data.color,
-          permissions: u.data.permissions,
-          role: u.data.role,
-        },
-        flags: u.data.flags,
-      })),
+      game.users.map((u) => {
+        const userData = isV10orNewer() ? u : u.data;
+        return {
+          name: userData.name,
+          core: {
+            avatar: userData.avatar,
+            color: userData.color,
+            permissions: userData.permissions,
+            role: userData.role,
+          },
+          flags: userData.flags,
+        };
+    }),
     );
     this.download(data, 'foundry-settings-export.json');
   }

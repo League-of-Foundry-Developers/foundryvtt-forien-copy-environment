@@ -1,4 +1,4 @@
-import {log} from './config.js';
+import {isV10orNewer, log} from './config.js';
 
 export default class Setting {
   /**
@@ -128,41 +128,40 @@ export class PlayerSetting {
       return this;
     }
 
-    if (setting.core.color !== existingUser.data.color) {
+    const userData = isV10orNewer() ? existingUser : existingUser.data;
+
+    if (setting.core.color !== userData.color) {
       this.playerDifferences.color = new Difference(
         'color',
-        existingUser.data.color,
+        userData.color,
         setting.core.color
       );
     }
 
-    if (setting.core.role !== existingUser.data.role) {
+    if (setting.core.role !== userData.role) {
       this.playerDifferences.role = new Difference(
         'role',
-        existingUser.data.role,
+        userData.role,
         setting.core.role
       );
     }
 
-    if (
-      JSON.stringify(setting.core.permissions) !==
-      JSON.stringify(existingUser.data.permissions)
-    ) {
+    if (JSON.stringify(setting.core.permissions) !== JSON.stringify(userData.permissions)) {
       this.playerDifferences.permissions = new Difference(
         'permissions',
-        existingUser.data.permissions,
+        userData.permissions,
         this.data.core.permissions
       );
     }
 
-    let flagDiff = diffObject(existingUser.data.flags, setting.flags);
+    let flagDiff = diffObject(userData.flags, setting.flags);
     for (const prop in flagDiff) {
       if (!flagDiff.hasOwnProperty(prop)) {
         continue;
       }
       this.playerFlagDifferences[prop] = new Difference(
         prop,
-        existingUser.data.flags[prop],
+        userData.flags[prop],
         flagDiff[prop]
       );
     }
