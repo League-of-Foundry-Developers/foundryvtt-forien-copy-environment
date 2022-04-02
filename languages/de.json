@@ -23,7 +23,8 @@
       "existingValue": "Bereits existierende Einstellungen, die unverändert sind und deshalb ausgelassen werden:",
       "existingPlayerValues": "Bereits existierende Spieler, die unverändert sind und deshalb ausgelassen werden:",
       "updatedPlayer": "Spieler Einstellungen angepasst für: {name}",
-      "noChanges": "Es gibt keinen Unterschied zwischen der aktuellen Welt und den zu importierenden Einstellungen."
+      "noChanges": "Es gibt keinen Unterschied zwischen der aktuellen Welt und den zu importierenden Einstellungen.",
+      "showSettings": "{count} Einstellungen anzeigen"
     }
   }
 }

@@ -4,6 +4,11 @@ export const templates = {
   settings: `modules/${name}/templates/settings.html`,
 };
 
+export function isV10orNewer() {
+  const gameVersion = game.version || game.data.version;
+  return gameVersion === '10.0' || isNewerVersion(gameVersion, '10');
+}
+
 export function log(force, ...args) {
   try {
     if (typeof force !== "boolean") {

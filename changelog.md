@@ -1,5 +1,16 @@
 # Changelog
 
+### v2.1.0
+
+* Added compatibility with Foundry VTT v10
+* Sorted the settings in the import dialog to make them easier to find.
+* Client settings are now correctly exported and imported.
+  * Request: [#10](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/10)
+* Grouped the settings by their module and collapsed them by default.
+  * Request: [#13](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/13)
+* Selecting (or unselecting) a setting will now remember that state across imports, saving you time from choosing just the selections you want.
+  * Request: [#18](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/18)
+
 ### v2.0.7
 
 * Added German translation thanks to brockhaus

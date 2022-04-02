@@ -1,4 +1,4 @@
-import {name, templates, log} from './config.js';
+import {name, isV10orNewer, templates, log} from './config.js';
 import Setting from './setting.js';
 
 export default class Core extends FormApplication {
@@ -7,6 +7,7 @@ export default class Core extends FormApplication {
    */
   constructor(settings) {
     super();
+    this.settingGroups = new Map();
     this.settings = [];
     this.hasWorldSettings = false;
     this.playerSettings = [];
@@ -14,6 +15,7 @@ export default class Core extends FormApplication {
     this.notChangedSettings = [];
     this.notChangedPlayers = [];
     this.notFoundPlayers = [];
+    this.selectedProperties = game.settings.get(name, 'selected-properties') || {};
 
     if (settings && Array.isArray(settings)) {
       log(false, 'Parsing provided settings', settings);
@@ -25,7 +27,13 @@ export default class Core extends FormApplication {
             switch (setting.type) {
               case Setting.WorldType:
                 if (setting.hasChanges()) {
-                  this.settings.push(setting.value);
+                  if (!this.settingGroups.has(setting.value.group)) {
+                    this.settingGroups.set(setting.value.group, []);
+                  }
+                  this.settingGroups.get(setting.value.group).push(setting.value);
+                  if (typeof this.selectedProperties[setting.value.key] === 'undefined') {
+                    this.selectedProperties[setting.value.key] = true;
+                  }
                   this.hasWorldSettings = true;
                 } else {
                   this.notChangedSettings.push(setting.data.key);
@@ -40,6 +48,18 @@ export default class Core extends FormApplication {
                   this.notFoundPlayers.push(setting.value);
                   break;
                 }
+                for (const [key, val] of Object.entries(setting.value.playerDifferences)) {
+                  const combinedKey = `${setting.value.name}--${key}`;
+                  if (typeof this.selectedProperties[combinedKey] === 'undefined') {
+                    this.selectedProperties[combinedKey] = true;
+                  }
+                }
+                for (const [key, val] of Object.entries(setting.value.playerFlagDifferences)) {
+                  const combinedKey = `${setting.value.name}--flag--${key}`;
+                  if (typeof this.selectedProperties[combinedKey] === 'undefined') {
+                    this.selectedProperties[combinedKey] = true;
+                  }
+                }
                 this.playerSettings.push(setting.value);
                 this.hasPlayerSettings = true;
             }
@@ -50,8 +70,13 @@ export default class Core extends FormApplication {
       });
     }
 
-    log(false, 'Processing world settings', this.settings);
-    log(false, 'Processing player settings', this.playerSettings);
+    this.settings = Object.entries(Object.fromEntries(this.settingGroups));
+    this.settings.sort((a, b) => a[0].localeCompare(b[0]));
+    this.playerSettings.sort((a, b) => a.key.localeCompare(b.key));
+
+    log(true, 'Processing world settings', this.settings);
+    log(true, 'Processing player settings', this.playerSettings);
+    log(true, 'Selected Properties', this.selectedProperties);
   }
 
   static get defaultOptions() {
@@ -75,23 +100,87 @@ export default class Core extends FormApplication {
       notChangedSettings: this.notChangedSettings,
       notChangedPlayers: this.notChangedPlayers,
       notFoundPlayers: this.notFoundPlayers,
+      selectedProperties: this.selectedProperties,
     };
   }
 
   activateListeners(html) {
     super.activateListeners(html);
 
+    const updateCheckboxStates = (el) => {
+      let overall = $(el.closest('tbody')).find('input[type=checkbox].toggle-selections')[0];
+      if ($(el).data()?.type === 'core' || $(el).data()?.type === 'flag') {
+        overall = $(el.closest('fieldset')).find('input[type=checkbox].toggle-selections')[0];
+      }
+
+      if (!overall) {
+        return;
+      }
+
+      const options = $(el.closest('tbody')).find(
+        'input[type=checkbox]:not(.toggle-selections)'
+      );
+
+      var checkedCount = 0;
+      for (var i = 0; i < options.length; i++) {
+        if (options[i].checked) {
+          checkedCount++;
+        }
+      }
+
+      if (checkedCount === 0) {
+        overall.checked = false;
+        overall.indeterminate = false;
+      } else if (checkedCount === options.length) {
+        overall.checked = true;
+        overall.indeterminate = false;
+      } else {
+        overall.checked = false;
+        overall.indeterminate = true;
+      }
+    };
+
     html.on('click', '.close', () => {
       this.close();
     });
 
-    html.on('change', '.toggle-selections', (el) => {
+    html.on('change', '.toggle-all-selections', (el) => {
       $(el.target.closest('fieldset'))
         .find('td input')
-        .prop('checked', el.target.checked);
+        .not(el.target)
+        .prop('checked', el.target.checked)
+        .change();
     });
 
-    html.on('click', '.import', () => {
+    html.on('change', '.toggle-selections', (el) => {
+      $(el.target.closest('tbody'))
+        .find('td input')
+        .not(el.target)
+        .prop('checked', el.target.checked)
+        .change();
+    });
+
+    html.on('click', '.show-settings', (el) => {
+      $(el.target.closest('tbody'))
+        .find('tr')
+        .not(el.target.closest('tr'))
+        .toggleClass('none');
+    });
+
+    html.on('change', 'input[type=checkbox]', (el) => {
+      if (!el.target.name) {
+        return;
+      }
+
+      console.log(`Setting ${el.target.name} to ${el.target.checked}`);
+      const selectedProperties = game.settings.get(name, 'selected-properties');
+      selectedProperties[el.target.name] = el.target.checked;
+      game.settings.set(name, 'selected-properties', selectedProperties);
+
+      updateCheckboxStates(el.target);
+    });
+
+    html.on('click', '.import', async () => {
       for (let field of this.form.getElementsByTagName('fieldset')) {
         let targetType = field.dataset?.type;
         if (!targetType) {
@@ -101,46 +190,52 @@ export default class Core extends FormApplication {
 
         switch (targetType) {
           case 'world':
-            this.importWorldSettings(field);
+            await this.importWorldSettings(field);
             break;
           case 'player':
-            this.importPlayerSettings(field);
+            await this.importPlayerSettings(field);
             break;
         }
       }
 
       this.close();
     });
+
+    html.find('tbody').each((i, el) => {
+      updateCheckboxStates($(el).find('input[type=checkbox]:first'));
+    });
   }
 
-  importWorldSettings(fieldset) {
+  async importWorldSettings(fieldset) {
     let changes = [];
     for (let input of fieldset.elements) {
       if (!input.checked || !input.name) {
         continue;
       }
 
-      let target = input.dataset?.for;
-      if (!this.settings[target]) {
+      const target = input.dataset?.for;
+      if (!target) {
+        continue;
+      }
+
+      const [group, val] = target.split('--');
+      if (!this.settings[group] || !this.settings[group][1] || !this.settings[group][1][val]) {
         log(false, 'Import world settings: could not find target for', input);
         continue;
       }
 
-      log(false, 'Importing world setting', this.settings[target]);
-      changes.push(this.settings[target]);
+      log(false, 'Importing world setting', this.settings[group][1][val]);
+      changes.push(this.settings[group][1][val]);
     }
     if (changes.length) {
-      Core.processSettings(changes).then(() => {
-        ui.notifications.info(
-          game.i18n.localize('forien-copy-environment.updatedReloading'),
-          {},
-        );
+      if (await Core.processSettings(changes)) {
+        ui.notifications.info(game.i18n.localize('forien-copy-environment.updatedReloading'));
         window.setTimeout(window.location.reload.bind(window.location), 5000);
-      });
+      }
     }
   }
 
-  importPlayerSettings(fieldset) {
+  async importPlayerSettings(fieldset) {
     let targetUser = null;
     let changes = {
       flags: {},
@@ -152,13 +247,13 @@ export default class Core extends FormApplication {
 
       let target = input.dataset?.for;
       if (!this.playerSettings[target]) {
-        log(false, 'Import player settings: could not find target for', input);
+        log(true, 'Import player settings: could not find target for', input);
         continue;
       }
 
       let type = input.dataset?.type;
       if (!type) {
-        log(false, 'Import player settings: missing type (core or flag)');
+        log(true, 'Import player settings: missing type (core or flag)');
         continue;
       }
 
@@ -166,33 +261,40 @@ export default class Core extends FormApplication {
         targetUser = game.users.getName(this.playerSettings[target].name);
       }
 
+      const fieldName = input.name.split('--').pop();
+      if (!type) {
+        log(true, 'Import player settings: missing value for', input.name);
+        continue;
+      }
+
       if (type === 'core') {
-        changes[input.name] = this.playerSettings[target].playerDifferences[input.name].newVal;
+        changes[fieldName] =
+          this.playerSettings[target].playerDifferences[fieldName].newVal;
       }
 
       if (type === 'flag') {
-        changes.flags[input.name] = this.playerSettings[target].playerFlagDifferences[input.name].newVal;
+        changes.flags[fieldName] =
+          this.playerSettings[target].playerFlagDifferences[fieldName].newVal;
       }
     }
 
     if (!targetUser) {
-      log(false, 'No targetUser found.');
+      log(true, 'No targetUser found.');
       return;
     }
 
     if (Object.keys(changes).length === 1 && isObjectEmpty(changes.flags)) {
-      log(false, 'No changes selected for', targetUser?.name);
+      log(true, 'No changes selected for', targetUser?.name);
       return;
     }
 
-    log(false, `Updating ${targetUser.name} with`, changes);
-    targetUser.update(changes);
+    log(true, `Updating ${targetUser.name} with`, changes);
+    await targetUser.update(changes);
 
     ui.notifications.info(
       game.i18n.format('forien-copy-environment.import.updatedPlayer', {
         name: targetUser.name,
-      }),
-      {},
+      })
     );
   }
 
@@ -210,7 +312,7 @@ export default class Core extends FormApplication {
   static data() {
     let modules = game.data.modules.filter((m) => m.active);
     let system = game.data.system;
-    let core = game.data.version;
+    let core = game.version || game.data.version;
 
     let message = game.i18n.localize('forien-copy-environment.message');
 
@@ -284,24 +386,37 @@ export default class Core extends FormApplication {
   }
 
   static exportGameSettings() {
-    const excludeModules = game.data.modules.filter(m => m.data?.flags?.noCopyEnvironmentSettings).map(m => m.id) || [];
+    const excludeModules = game.data.modules.filter((m) => m.data?.flags?.noCopyEnvironmentSettings).map((m) => m.id) || [];
 
     // Return an array with both the world settings and player settings together.
     let data = Array.prototype.concat(
-      game.data.settings.filter(s => !excludeModules.some(e => s.key.startsWith(`${e}.`))).map((s) => ({
-        key: s.key,
-        value: s.value,
-      })),
-      game.users.map((u) => ({
-        name: u.data.name,
-        core: {
-          avatar: u.data.avatar,
-          color: u.data.color,
-          permissions: u.data.permissions,
-          role: u.data.role,
-        },
-        flags: u.data.flags,
-      })),
+      Array.from(game.settings.settings)
+        .filter(([k, v]) => {
+          const value = game.settings.get(v.namespace, v.key);
+          let sameValue = value === v.default;
+          if (typeof value === 'object' && typeof v.default === 'object') {
+            sameValue = !Object.keys(diffObject(value, v.default)).length;
+          }
+          return !excludeModules.some((e) => v.namespace === e) && !sameValue;
+        })
+        .map(([k, v]) => ({
+          key: k,
+          value: JSON.stringify(game.settings.get(v.namespace, v.key)),
+        }))
+        .sort((a, b) => a.key.localeCompare(b.key)),
+      game.users.map((u) => {
+        const userData = isV10orNewer() ? u : u.data;
+        return {
+          name: userData.name,
+          core: {
+            avatar: userData.avatar,
+            color: userData.color,
+            permissions: userData.permissions,
+            role: userData.role,
+          },
+          flags: userData.flags,
+        };
+    }),
     );
     this.download(data, 'foundry-settings-export.json');
   }
@@ -331,7 +446,7 @@ export default class Core extends FormApplication {
   }
 
   static async processSettings(settings) {
-    if (isNewerVersion(game.data.version, '0.7.9')) {
+    if (isNewerVersion((game.version || game.data.version), '0.7.9')) {
       const updates = [];
       const creates = [];
       settings.forEach(data => {
@@ -366,14 +481,12 @@ export default class Core extends FormApplication {
             data: creates,
           });
         }
+        return true;
       } catch (e) {
-        log(
-          false,
-          `Settings update could not be dispatched to server.`,
-        );
+        log(true, `Settings update could not be dispatched to server.`);
         console.error(e);
       }
-      return;
+      return false;
     }
     for (const setting of settings) {
       const config = game.settings.settings.get(setting.key);
@@ -387,13 +500,12 @@ export default class Core extends FormApplication {
             action: 'update',
             data: setting,
           });
+          return true;
         } catch (e) {
-          log(
-            false,
-            `Setting key ${setting.key} could not be dispatched to server.`,
-          );
+          log(true, `Setting key ${setting.key} could not be dispatched to server.`);
           console.error(e);
         }
+        return false;
       }
     }
   }

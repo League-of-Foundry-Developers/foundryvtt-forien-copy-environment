@@ -1,6 +1,15 @@
 import {name} from './config.js';
 import Core from './core.js';
 
+Hooks.once('init', function(){
+  game.settings.register(name, 'selected-properties', {
+    scope: 'client',
+    config: false,
+    type: Object,
+    default:{}
+  });
+});
+
 Hooks.once('devModeReady', ({registerPackageDebugFlag}) => {
   registerPackageDebugFlag(name);
 });
