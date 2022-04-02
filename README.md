@@ -6,7 +6,7 @@
 
 **NOTE** This is an unofficial forked version of the module maintained by the League of Foundry Developers to provide module continuity while Forien is unavailable.
 
-**[Compatibility]**: *FoundryVTT* 0.6.0 - 9.0+
+**[Compatibility]**: *FoundryVTT* 0.6.0 - 10.0+
 
 **[Systems]**: *any*
 
