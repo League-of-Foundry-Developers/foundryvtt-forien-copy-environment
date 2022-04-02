@@ -2,6 +2,25 @@
 #forien-copy-environment-settings fieldset th.property {
   text-align: left;
 }
-#forien-copy-environment-settings fieldset td.value {
+#forien-copy-environment-settings fieldset td {
   word-break: break-all;
+  vertical-align: top;
+}
+#forien-copy-environment-settings form {
+  max-height: 100%;
+}
+#forien-copy-environment-settings form tbody {
+  border-bottom: 1px solid #777;
+}
+#forien-copy-environment-settings form tbody tr.none {
+  display: none;
+}
+#forien-copy-environment-settings form tbody tr span.show-settings {
+  text-decoration: underline;
+  cursor: pointer;
+}
+#forien-copy-environment-settings section.import-properties {
+  max-height: calc(100% - 82px);
+  overflow: auto;
+  margin-bottom: 10px;
 }

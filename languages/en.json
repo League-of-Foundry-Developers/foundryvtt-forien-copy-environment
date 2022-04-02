@@ -23,7 +23,8 @@
       "existingValue": "Existing values that are unchanged and will be skipped:",
       "existingPlayerValues": "Existing players that are unchanged and will be skipped:",
       "updatedPlayer": "Updated player settings for: {name}",
-      "noChanges": "There are no differences between the current world and the imported settings."
+      "noChanges": "There are no differences between the current world and the imported settings.",
+      "showSettings": "Show {count} settings"
     }
   }
 }

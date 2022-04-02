@@ -1,30 +1,36 @@
 <form class="{{classes}}" autocomplete="off">
   <h2>{{localize 'forien-copy-environment.intro'}}</h2>
 
+  <section class="import-properties">
   {{#if hasWorldSettings}}
   <fieldset name="input world" data-type="world">
     <legend>{{localize 'forien-copy-environment.import.title'}}</legend>
     <table>
       <thead>
-        <th width="20%" class="property"><label><input type="checkbox" class="toggle-selections" checked>
+        <th width="20%" class="property"><label><input type="checkbox" class="toggle-all-selections">
           {{localize 'forien-copy-environment.import.property'}}</label></th>
         <th width="40%">{{localize 'forien-copy-environment.import.newValue'}}</th>
         <th width="40%">{{localize 'forien-copy-environment.import.currentValue'}}</th>
       </thead>
-      <tbody>
-        {{#each settings}}
-        <tr>
-          <td><label><input name="{{ key }}" id="world-{{@index}}" type="checkbox" data-for="{{ @index }}"
-                data-type="world" checked>{{ key }}</label></td>
-          <td class="value">
-            {{ difference.newString }}
-          </td>
-          <td class="value">
-            {{ difference.oldString }}
-          </td>
-        </tr>
-        {{/each}}
-      </tbody>
+      {{#each settings as |setting|}}
+        <tbody>
+          <tr>
+            <td colspan="3"><label><input type="checkbox" class="toggle-selections"> {{setting.[0]}}</label> <span class="show-settings">({{localize 'forien-copy-environment.import.showSettings' count=setting.[1].length}})</span></td>
+          </tr>
+          {{#each setting.[1]}}
+          <tr class="none">
+            <td width="20%"><label for="world-{{key}}"><input name="{{ key }}" id="world-{{key}}" type="checkbox" data-for="{{ @../index }}--{{ @index }}"
+                  data-type="world" {{checked (lookup @root.selectedProperties key)}}>{{ key }}</label></td>
+            <td width="40%" class="value">
+              <label for="world-{{key}}">{{ difference.newString }}</label>
+            </td>
+            <td width="40%" class="value">
+              <label for="world-{{key}}">{{ difference.oldString }}</label>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      {{/each}}
     </table>
   </fieldset>
   {{/if}}
@@ -50,29 +56,33 @@
         <th width="40%">{{localize 'forien-copy-environment.import.currentValue'}}</th>
       </thead>
       <tbody>
-        {{#each playerDifferences}}
+        {{#each playerDifferences as |diff|}}
+        {{#with (concat ../name "--" name) as |fkey|}}
         <tr>
-          <td><label><input name="{{ name }}" id="core-{{@../index}}-{{@index}}" type="checkbox"
-                data-for="{{ @../index }}" data-type="core" checked>{{ name }}</label></td>
+          <td><label for="{{fkey}}"><input name="{{fkey}}" id="{{fkey}}" type="checkbox"
+                data-for="{{ @../index }}" data-type="core" {{checked (lookup @root.selectedProperties fkey)}}>{{ diff.name }}</label></td>
           <td class="value">
-            {{ newString }}
+            <label for="{{fkey}}">{{ diff.newString }}
           </td>
           <td class="value">
-            {{ oldString }}
+            <label for="{{fkey}}">{{ diff.oldString }}</label>
           </td>
         </tr>
+        {{/with}}
         {{/each}}
-        {{#each playerFlagDifferences}}
+        {{#each playerFlagDifferences as |diff|}}
+        {{#with (concat ../name "--flag--" name) as |fkey|}}
         <tr>
-          <td><label><input name="{{ name }}" type="checkbox" data-for="{{ @../index }}" data-type="flag"
-                checked>{{ name }}</label></td>
+          <td><label for="{{fkey}}"><input name="{{fkey}}" type="checkbox" id="{{fkey}}" data-for="{{ @../index }}" data-type="flag"
+            {{checked (lookup @root.selectedProperties fkey)}}>{{ diff.name }}</label></td>
           <td class="value">
-            {{ newString }}
+            <label for="{{fkey}}">{{ diff.newString }}</label>
           </td>
           <td class="value">
-            {{ oldString }}
+            <label for="{{fkey}}">{{ diff.oldString }}</label>
           </td>
         </tr>
+        {{/with}}
         {{/each}}
       </tbody>
     </table>
@@ -101,6 +111,7 @@
   {{#unless hasChanges}}
   <p><strong>{{localize 'forien-copy-environment.import.noChanges'}}</strong></p>
   {{/unless}}
+  </section>
 
   <div class="flexrow">
     {{#if hasChanges}}<button type="button" class="import"><i class="fas fa-save"></i>
