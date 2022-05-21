@@ -1,5 +1,10 @@
 # Changelog
 
+### v2.1.1
+
+* Fixed settings stored in an object not being compared correctly.
+  * Importantly, this makes the "Enabled Modules" setting to be correctly saved and imported.
+
 ### v2.1.0
 
 * Added compatibility with Foundry VTT v10

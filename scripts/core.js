@@ -18,7 +18,7 @@ export default class Core extends FormApplication {
     this.selectedProperties = game.settings.get(name, 'selected-properties') || {};
 
     if (settings && Array.isArray(settings)) {
-      log(false, 'Parsing provided settings', settings);
+      log(true, 'Parsing provided settings', settings);
 
       settings.forEach((data) => {
         try {
@@ -395,7 +395,7 @@ export default class Core extends FormApplication {
           const value = game.settings.get(v.namespace, v.key);
           let sameValue = value === v.default;
           if (typeof value === 'object' && typeof v.default === 'object') {
-            sameValue = !Object.keys(diffObject(value, v.default)).length;
+            sameValue = !Object.keys(diffObject(v.default, value)).length && !Object.keys(diffObject(value, v.default)).length;
           }
           return !excludeModules.some((e) => v.namespace === e) && !sameValue;
         })
