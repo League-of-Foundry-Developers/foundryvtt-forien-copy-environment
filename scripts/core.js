@@ -65,7 +65,7 @@ export default class Core extends FormApplication {
             }
           }
         } catch (e) {
-          log(false, 'Error importing setting:', e, data);
+          console.error('Copy Environment |', 'Error importing setting:', data, e);
         }
       });
     }
@@ -191,10 +191,10 @@ export default class Core extends FormApplication {
 
         switch (targetType) {
           case 'world':
-            changed = changed || await this.importWorldSettings(field);
+            changed = await this.importWorldSettings(field) || changed;
             break;
           case 'player':
-            changed = changed || await this.importPlayerSettings(field);
+            changed = await this.importPlayerSettings(field) || changed;
             break;
         }
       }
@@ -462,10 +462,16 @@ export default class Core extends FormApplication {
         } else if (game.user.isGM) {
           const existing = game.data.settings.find((s) => s.key === data.key);
           if (existing?._id) {
-            data._id = existing._id;
-            updates.push(data);
+            updates.push({
+              _id: existing._id,
+              key: data.key,
+              value: data.value,
+            });
           } else {
-            creates.push(data);
+            creates.push({
+              key: data.key,
+              value: data.value,
+            });
           }
         }
       });

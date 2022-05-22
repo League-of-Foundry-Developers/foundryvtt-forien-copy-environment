@@ -75,7 +75,12 @@ export class WorldSetting {
     const keyParts = this.key.split('.');
     const namespace = keyParts.shift();
     const key = keyParts.join('.');
-    let existingSetting = game.settings.get(namespace, key);
+    let existingSetting;
+    try {
+      existingSetting = game.settings.get(namespace, key);
+    } catch (e) {
+      // do nothing, it just means the setting isn't registered, likely because the module isn't enabled.
+    }
     try {
       let newValue = this.value;
       if (newValue) {
