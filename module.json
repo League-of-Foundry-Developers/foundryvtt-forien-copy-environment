@@ -1,21 +1,18 @@
 {
   "name": "forien-copy-environment",
   "title": "Forien's Copy Environment",
-  "description": "Allows for copying TXT/JSON list of system/modules and versions, and gives ability to export/import game and player settings",
-  "author": "Forien — Forien#2130",
+  "description": "Allows for copying list of system/modules and versions, and gives ability to export/import game and player settings",
+  "author": "Blair McMillan",
   "authors": [
-    {
-      "name": "Forien",
-      "url": "https://www.patreon.com/forien"
-    },
-    {
-      "name": "The League of Extraordinary FoundryVTT Developers",
-      "url": "https://github.com/League-of-Foundry-Developers"
-    },
     {
       "name": "Blair McMillan",
       "url": "https://github.com/sneat",
       "discord": "blair#9056"
+    },
+    {
+      "name": "Forien",
+      "url": "https://www.patreon.com/forien",
+      "discord": "Forien#2130"
     }
   ],
   "url": "https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",
@@ -24,7 +21,7 @@
   "flags": {
     "allowBugReporter": true
   },
-  "version": "2.1.1",
+  "version": "2.1.2",
   "minimumCoreVersion": "0.6.0",
   "compatibleCoreVersion": "10",
   "scripts": [],

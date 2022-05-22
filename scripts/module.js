@@ -21,28 +21,33 @@ Hooks.on('renderSettings', function (app, html, data) {
         name: game.i18n.localize('forien-copy-environment.menu.copy'),
         icon: '<i class="far fa-copy"></i>',
         callback: () => {
-          Core.copyAsText();
-        },
-      },
-      {
-        name: game.i18n.localize('forien-copy-environment.menu.save'),
-        icon: '<i class="fas fa-paste"></i>',
-        callback: () => {
-          Core.saveSummaryAsJSON();
+          try {
+            Core.copyAsText();
+          } catch (e) {
+            console.error('Copy Environment | Error copying game settings to clipboard', e);
+          }
         },
       },
       {
         name: game.i18n.localize('forien-copy-environment.menu.export'),
         icon: '<i class="fas fa-file-export"></i>',
         callback: () => {
-          Core.exportGameSettings();
+          try {
+            Core.exportGameSettings();
+          } catch (e) {
+            console.error('Copy Environment | Error exporting game settings', e);
+          }
         },
       },
       {
         name: game.i18n.localize('forien-copy-environment.menu.import'),
         icon: '<i class="fas fa-file-import"></i>',
         callback: () => {
-          Core.importGameSettingsQuick();
+          try {
+            Core.importGameSettingsQuick();
+          } catch (e) {
+            console.error('Copy Environment | Error importing game settings', e);
+          }
         },
       },
     ]);

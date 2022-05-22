@@ -6,6 +6,9 @@
   word-break: break-all;
   vertical-align: top;
 }
+#forien-copy-environment-settings fieldset td:first-of-type {
+  min-width: 20%;
+}
 #forien-copy-environment-settings form {
   max-height: 100%;
 }
