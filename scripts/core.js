@@ -181,7 +181,8 @@ export default class Core extends FormApplication {
     });
 
     html.on('click', '.import', async () => {
-      for (let field of this.form.getElementsByTagName('fieldset')) {
+      let changed = false;
+      for (let field of Array.from(this.form.getElementsByTagName('fieldset')).sort(f => f.dataset?.type === 'player' ? -1 : 1)) {
         let targetType = field.dataset?.type;
         if (!targetType) {
           log(false, 'Could not find fieldset target type');
@@ -190,12 +191,17 @@ export default class Core extends FormApplication {
 
         switch (targetType) {
           case 'world':
-            await this.importWorldSettings(field);
+            changed = changed || await this.importWorldSettings(field);
             break;
           case 'player':
-            await this.importPlayerSettings(field);
+            changed = changed || await this.importPlayerSettings(field);
             break;
         }
+      }
+
+      if (changed) {
+        ui.notifications.info(game.i18n.localize('forien-copy-environment.updatedReloading'), {permanent: true});
+        window.setTimeout(window.location.reload.bind(window.location), 6000);
       }
 
       this.close();
@@ -227,12 +233,17 @@ export default class Core extends FormApplication {
       log(false, 'Importing world setting', this.settings[group][1][val]);
       changes.push(this.settings[group][1][val]);
     }
-    if (changes.length) {
-      if (await Core.processSettings(changes)) {
-        ui.notifications.info(game.i18n.localize('forien-copy-environment.updatedReloading'));
-        window.setTimeout(window.location.reload.bind(window.location), 5000);
-      }
+    if (!changes.length) {
+      return false;
     }
+
+    try {
+      await Core.processSettings(changes);
+    } catch (e) {
+      console.error('Import world settings: error', e);
+      return false;
+    }
+    return true;
   }
 
   async importPlayerSettings(fieldset) {
@@ -280,12 +291,12 @@ export default class Core extends FormApplication {
 
     if (!targetUser) {
       log(true, 'No targetUser found.');
-      return;
+      return false;
     }
 
     if (Object.keys(changes).length === 1 && isObjectEmpty(changes.flags)) {
       log(true, 'No changes selected for', targetUser?.name);
-      return;
+      return false;
     }
 
     log(true, `Updating ${targetUser.name} with`, changes);
@@ -296,6 +307,8 @@ export default class Core extends FormApplication {
         name: targetUser.name,
       })
     );
+
+    return true;
   }
 
   static download(data, filename) {
@@ -309,33 +322,42 @@ export default class Core extends FormApplication {
     saveDataToFile(jsonStr, 'application/json', filename);
   }
 
-  static data() {
-    let modules = game.data.modules.filter((m) => m.active);
-    let system = game.data.system;
-    let core = game.version || game.data.version;
-
-    let message = game.i18n.localize('forien-copy-environment.message');
-
-    return {
-      message,
-      core,
-      system,
-      modules,
-    };
-  }
-
   static getText() {
-    let data = this.data();
-    let text = `Core Version: ${data.core}\n\n`;
+    const modules = (isV10orNewer() ? game.modules : game.data.modules).map(m => {
+      let mod;
+      if (isV10orNewer()) {
+        mod = m.toObject();
+      } else {
+        mod = m.data.toObject();
+      }
+      mod.active = m.active;
+      return mod;
+    }).filter((m) => m.active);
+    const system = isV10orNewer() ? game.data.system : game.data.system.data;
+    const core = game.version || game.data.version;
 
-    text += `System: ${data.system.id} ${data.system.data.version} (${data.system.data.author}) \n\n`;
+    let text = `Core Version: ${core}\n\n`;
+
+    const systemAuthors = system.authors.length ? system.authors.map(a => {
+      if (typeof a === 'string') {
+        return a;
+      }
+      return a.name;
+    }) : [system.author];
+    text += `System: ${(system.id ?? system.name)} ${system.version} (${Array.from(new Set(systemAuthors)).join(', ')}) \n\n`;
 
     text += `Modules: \n`;
-    data.modules.forEach((m) => {
-      text += `${m.id} ${m.data.version} (${m.data.author})\n`;
+    modules.forEach((m) => {
+      const moduleAuthors = m.authors.length ? m.authors.map(a => {
+        if (typeof a === 'string') {
+          return a;
+        }
+        return a.name;
+      }) : [m.author];
+      text += `${(m.id ?? m.name)} ${m.version} (${Array.from(new Set(moduleAuthors)).join(', ')})\n`;
     });
 
-    text += `\n${data.message}`;
+    text += `\n${game.i18n.localize('forien-copy-environment.message')}`;
 
     log(false, text);
 
@@ -361,43 +383,24 @@ export default class Core extends FormApplication {
     );
   }
 
-  static saveSummaryAsJSON() {
-    let data = this.data();
-
-    data.core = {
-      version: data.core,
-    };
-    data.system = {
-      id: data.system.id,
-      version: data.system.data.version,
-      author: data.system.data.author,
-      manifest: data.system.data.manifest,
-    };
-    data.modules = data.modules.map((m) => {
-      return {
-        id: m.id,
-        version: m.data.version,
-        author: m.data.author,
-        manifest: m.data.manifest,
-      };
-    });
-
-    this.download(data, 'foundry-environment.json');
-  }
-
   static exportGameSettings() {
-    const excludeModules = game.data.modules.filter((m) => m.data?.flags?.noCopyEnvironmentSettings).map((m) => m.id) || [];
+    const excludeModules = game.data.modules.filter((m) => m.flags?.noCopyEnvironmentSettings || m.data?.flags?.noCopyEnvironmentSettings).map((m) => m.id) || [];
 
     // Return an array with both the world settings and player settings together.
     let data = Array.prototype.concat(
       Array.from(game.settings.settings)
         .filter(([k, v]) => {
-          const value = game.settings.get(v.namespace, v.key);
-          let sameValue = value === v.default;
-          if (typeof value === 'object' && typeof v.default === 'object') {
-            sameValue = !Object.keys(diffObject(v.default, value)).length && !Object.keys(diffObject(value, v.default)).length;
+          try {
+            const value = game.settings.get(v.namespace, v.key);
+            let sameValue = value === v.default;
+            if (value && typeof value === 'object' && v.default && typeof v.default === 'object') {
+              sameValue = !Object.keys(diffObject(v.default, value)).length && !Object.keys(diffObject(value, v.default)).length;
+            }
+            return !sameValue && !excludeModules.some((e) => v.namespace === e);
+          } catch (e) {
+            console.error(`Copy Environment | Could not export settings for ${v.namespace}.${v.key} due to an error. Please report this as an issue on GitHub.`, e);
+            return true;
           }
-          return !excludeModules.some((e) => v.namespace === e) && !sameValue;
         })
         .map(([k, v]) => ({
           key: k,
@@ -468,6 +471,7 @@ export default class Core extends FormApplication {
       });
       try {
         if (updates.length) {
+          log(true, `Updating ${updates.length} world settings.`, updates);
           await SocketInterface.dispatch('modifyDocument', {
             type: 'Setting',
             action: 'update',
@@ -475,6 +479,7 @@ export default class Core extends FormApplication {
           });
         }
         if (creates.length) {
+          log(true, `Creating ${creates.length} world settings.`, creates);
           await SocketInterface.dispatch('modifyDocument', {
             type: 'Setting',
             action: 'create',

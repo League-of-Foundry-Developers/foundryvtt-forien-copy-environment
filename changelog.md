@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1.2
+
+* Better handling of config options to make it less likely to break on certain module's configuration settings.
+* Added more logging to assist with any future issues.
+* Adjust process order to make sure that the server has time to process the updates before the client reloads.
+* Removed the `Save as JSON` context menu option as it was rarely the desired action and was confusing (it was not the version that allowed the user to import the settings).
+
 ### v2.1.1
 
 * Fixed settings stored in an object not being compared correctly.
