@@ -10,7 +10,7 @@ export default class Setting {
     this.value = undefined;
 
     if (!data || typeof data !== 'object') {
-      log(false, 'Unknown setting received:', data);
+      console.error('Copy Environment | Unknown setting received:', data);
       return this;
     }
 
@@ -100,7 +100,7 @@ export class WorldSetting {
 
       return new Difference(this.key, existingSetting, newValue);
     } catch (e) {
-      log(false, 'Could not parse world setting values:', e, this.key);
+      console.error('Copy Environment | Could not parse world setting values:', this.key, e);
     }
 
     // Return the difference of the original values, not the parsed values.

@@ -57,29 +57,29 @@
       </thead>
       <tbody>
         {{#each playerDifferences as |diff|}}
-        {{#with (concat ../name "--" name) as |fkey|}}
+        {{#with (concat ../name "--" diff.[1].name) as |fkey|}}
         <tr>
           <td><label for="{{fkey}}"><input name="{{fkey}}" id="{{fkey}}" type="checkbox"
-                data-for="{{ @../index }}" data-type="core" {{checked (lookup @root.selectedProperties fkey)}}>{{ diff.name }}</label></td>
+                data-for="{{ @../index }}" data-type="core" {{checked (lookup @root.selectedProperties fkey)}}>{{ diff.[1].name }}</label></td>
           <td class="value">
-            <label for="{{fkey}}">{{ diff.newString }}
+            <label for="{{fkey}}">{{ diff.[1].newString }}</label>
           </td>
           <td class="value">
-            <label for="{{fkey}}">{{ diff.oldString }}</label>
+            <label for="{{fkey}}">{{ diff.[1].oldString }}</label>
           </td>
         </tr>
         {{/with}}
         {{/each}}
         {{#each playerFlagDifferences as |diff|}}
-        {{#with (concat ../name "--flag--" name) as |fdkey|}}
+        {{#with (concat ../name "--flag--" diff.[1].name) as |fdkey|}}
         <tr>
           <td><label for="{{fdkey}}"><input name="{{fdkey}}" type="checkbox" id="{{fdkey}}" data-for="{{ @../index }}" data-type="flag"
-            {{checked (lookup @root.selectedProperties fdkey)}}>{{ diff.name }}</label></td>
+            {{checked (lookup @root.selectedProperties fdkey)}}>{{ diff.[1].name }}</label></td>
           <td class="value">
-            <label for="{{fdkey}}">{{ diff.newString }}</label>
+            <label for="{{fdkey}}">{{ diff.[1].newString }}</label>
           </td>
           <td class="value">
-            <label for="{{fdkey}}">{{ diff.oldString }}</label>
+            <label for="{{fdkey}}">{{ diff.[1].oldString }}</label>
           </td>
         </tr>
         {{/with}}
