@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.3
+
+- Fixed issue where having a player other than GM in the world would prevent the importer from correctly importing anything.
+
 ## v2.1.2
 
 * Better handling of config options to make it less likely to break on certain module's configuration settings.

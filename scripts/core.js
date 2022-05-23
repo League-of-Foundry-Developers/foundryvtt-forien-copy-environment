@@ -62,6 +62,9 @@ export default class Core extends FormApplication {
                 }
                 this.playerSettings.push(setting.value);
                 this.hasPlayerSettings = true;
+                break;
+              default:
+                throw new Error(`Unknown setting type: ${setting.type}`);
             }
           }
         } catch (e) {
@@ -72,7 +75,12 @@ export default class Core extends FormApplication {
 
     this.settings = Object.entries(Object.fromEntries(this.settingGroups));
     this.settings.sort((a, b) => a[0].localeCompare(b[0]));
-    this.playerSettings.sort((a, b) => a.key.localeCompare(b.key));
+    for (const playerSetting of this.playerSettings) {
+      playerSetting.playerDifferences = Object.entries(playerSetting.playerDifferences);
+      playerSetting.playerDifferences.sort((a, b) => a[0].localeCompare(b[0]));
+      playerSetting.playerFlagDifferences = Object.entries(playerSetting.playerFlagDifferences);
+      playerSetting.playerFlagDifferences.sort((a, b) => a[0].localeCompare(b[0]));
+    }
 
     log(true, 'Processing world settings', this.settings);
     log(true, 'Processing player settings', this.playerSettings);
@@ -280,12 +288,12 @@ export default class Core extends FormApplication {
 
       if (type === 'core') {
         changes[fieldName] =
-          this.playerSettings[target].playerDifferences[fieldName].newVal;
+          Object.fromEntries(this.playerSettings[target].playerDifferences)[fieldName].newVal;
       }
 
       if (type === 'flag') {
         changes.flags[fieldName] =
-          this.playerSettings[target].playerFlagDifferences[fieldName].newVal;
+          Object.fromEntries(this.playerSettings[target].playerFlagDifferences)[fieldName].newVal;
       }
     }
 
@@ -359,7 +367,7 @@ export default class Core extends FormApplication {
 
     text += `\n${game.i18n.localize('forien-copy-environment.message')}`;
 
-    log(false, text);
+    log(true, text);
 
     return text;
   }
@@ -443,7 +451,7 @@ export default class Core extends FormApplication {
         let coreSettings = new Core(settings);
         coreSettings.render(true);
       } catch (e) {
-        log(false, 'Could not parse import data.');
+        console.error('Copy Environment | Could not parse import data.', e);
       }
     });
   }
