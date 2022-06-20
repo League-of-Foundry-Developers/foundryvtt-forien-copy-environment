@@ -2,7 +2,7 @@
   "forien-copy-environment": {
     "menu": {
       "copy": "クリップボードにコピー",
-      "save": "JSONに保存",
+      "save": "JSONとしてコピー",
       "export": "設定のエクスポート",
       "import": "設定のインポート"
     },
@@ -12,6 +12,7 @@
     "copiedToClipboard": "環境データをクリップボードにコピーしました！",
     "updatedReloading": "ワールド設定を更新しました。5秒後に再読み込みします……",
     "import": {
+      "title": "ワールドの設定",
       "save": "インポート設定",
       "playerList": "次のプレイヤー設定をインポートします：",
       "existing": "既存のエクスポートをインポートします：",
@@ -22,7 +23,8 @@
       "existingValue": "次の値は変更がないためスキップされます：",
       "existingPlayerValues": "次のプレイヤーは変更がないためスキップされます：",
       "updatedPlayer": "次のプレイヤーの設定を更新しました：{name}",
-      "noChanges": "現在のワールド設定とインポートした設定に差異がありません。"
+      "noChanges": "現在のワールド設定とインポートした設定に差異がありません。",
+      "showSettings": "{count} の設定を表示"
     }
   }
 }

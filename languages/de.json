@@ -2,7 +2,7 @@
   "forien-copy-environment": {
     "menu": {
       "copy": "Als Text kopieren",
-      "save": "Als JSON abspeichern",
+      "save": "Als JSON kopieren",
       "export": "Einstellungen exportieren",
       "import": "Einstellungen importieren"
     },

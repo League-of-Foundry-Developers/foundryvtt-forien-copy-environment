@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1.4
+
+- Added timestamp to file export.
+  - As requested in [#30](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/30)
+- Re-added "Save as JSON" which was removed in v2.1.2 as requested in [#29](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/29)
+  - Have renamed this to `Copy as JSON` to help differentiate it from the `Export Settings` option.
+
 ## v2.1.3
 
 - Fixed issue where having a player other than GM in the world would prevent the importer from correctly importing anything.

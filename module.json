@@ -1,4 +1,5 @@
 {
+  "id": "forien-copy-environment",
   "name": "forien-copy-environment",
   "title": "Forien's Copy Environment",
   "description": "Allows for copying list of system/modules and versions, and gives ability to export/import game and player settings",
@@ -21,9 +22,13 @@
   "flags": {
     "allowBugReporter": true
   },
-  "version": "2.1.3",
+  "version": "2.1.4",
   "minimumCoreVersion": "0.6.0",
   "compatibleCoreVersion": "10",
+  "compatibility": {
+    "minimum": "0.6.0",
+    "verified": "10.270"
+  },
   "scripts": [],
   "esmodules": [
     "/scripts/module.js"

@@ -1,12 +1,12 @@
 import {name} from './config.js';
 import Core from './core.js';
 
-Hooks.once('init', function(){
+Hooks.once('init', function () {
   game.settings.register(name, 'selected-properties', {
     scope: 'client',
     config: false,
     type: Object,
-    default:{}
+    default: {},
   });
 });
 
@@ -25,6 +25,17 @@ Hooks.on('renderSettings', function (app, html, data) {
             Core.copyAsText();
           } catch (e) {
             console.error('Copy Environment | Error copying game settings to clipboard', e);
+          }
+        },
+      },
+      {
+        name: game.i18n.localize('forien-copy-environment.menu.save'),
+        icon: '<i class="fas fa-copy"></i>',
+        callback: () => {
+          try {
+            Core.saveSummaryAsJSON();
+          } catch (e) {
+            console.error('Copy Environment | Error copying game settings to JSON', e);
           }
         },
       },
