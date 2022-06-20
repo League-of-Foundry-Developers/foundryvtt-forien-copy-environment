@@ -2,7 +2,7 @@
   "forien-copy-environment": {
     "menu": {
       "copy": "Copy as text",
-      "save": "Save as JSON",
+      "save": "Copy as JSON",
       "export": "Export Settings",
       "import": "Import Settings"
     },

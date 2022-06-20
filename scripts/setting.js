@@ -88,7 +88,7 @@ export class WorldSetting {
       }
       if (typeof existingSetting === 'object' && typeof newValue === 'object') {
         let diff = diffObject(existingSetting, newValue);
-        if (isObjectEmpty(diff)) {
+        if (typeof isEmpty === 'function' ? isEmpty(diff) : isObjectEmpty(diff)) {
           // No difference in the underlying object.
           return new Difference(this.key, null, null);
         }
@@ -190,6 +190,10 @@ export class PlayerSetting {
    * @returns boolean
    */
   hasDataChanges() {
+    if (typeof isEmpty === 'function') {
+      return !isEmpty(this.playerDifferences) || !isEmpty(this.playerFlagDifferences);
+    }
+
     return (
       !isObjectEmpty(this.playerDifferences) ||
       !isObjectEmpty(this.playerFlagDifferences)

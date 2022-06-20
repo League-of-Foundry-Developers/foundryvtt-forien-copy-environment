@@ -302,7 +302,7 @@ export default class Core extends FormApplication {
       return false;
     }
 
-    if (Object.keys(changes).length === 1 && isObjectEmpty(changes.flags)) {
+    if (Object.keys(changes).length === 1 && (typeof isEmpty === 'function' ? isEmpty(changes.flags) : isObjectEmpty(changes.flags))) {
       log(true, 'No changes selected for', targetUser?.name);
       return false;
     }
@@ -331,16 +331,6 @@ export default class Core extends FormApplication {
   }
 
   static getText() {
-    const modules = (isV10orNewer() ? game.modules : game.data.modules).map(m => {
-      let mod;
-      if (isV10orNewer()) {
-        mod = m.toObject();
-      } else {
-        mod = m.data.toObject();
-      }
-      mod.active = m.active;
-      return mod;
-    }).filter((m) => m.active);
     const system = isV10orNewer() ? game.data.system : game.data.system.data;
     const core = game.version || game.data.version;
 
@@ -355,7 +345,7 @@ export default class Core extends FormApplication {
     text += `System: ${(system.id ?? system.name)} ${system.version} (${Array.from(new Set(systemAuthors)).join(', ')}) \n\n`;
 
     text += `Modules: \n`;
-    modules.forEach((m) => {
+    Core.getModulesForExport().forEach((m) => {
       const moduleAuthors = m.authors.length ? m.authors.map(a => {
         if (typeof a === 'string') {
           return a;
@@ -389,6 +379,56 @@ export default class Core extends FormApplication {
       game.i18n.localize('forien-copy-environment.copiedToClipboard'),
       {},
     );
+  }
+
+  static getModulesForExport() {
+    return (isV10orNewer() ? game.modules : game.data.modules).map(m => {
+      let mod;
+      if (isV10orNewer()) {
+        mod = m.toObject();
+      } else {
+        mod = m.data.toObject();
+      }
+      mod.active = m.active;
+      return mod;
+    }).filter((m) => m.active);
+  }
+
+  static saveSummaryAsJSON() {
+    const system = isV10orNewer() ? game.data.system : game.data.system.data;
+    const systemAuthors = system.authors.length ? system.authors.map(a => {
+      if (typeof a === 'string') {
+        return a;
+      }
+      return a.name;
+    }) : [system.author];
+
+    const data = {};
+    data.core = {
+      version: game.version || game.data.version,
+    };
+    data.system = {
+      id: system.id,
+      version: system.version,
+      author: Array.from(new Set(systemAuthors)).join(', '),
+      manifest: system.manifest,
+    };
+    data.modules = Core.getModulesForExport().map((m) => {
+      const moduleAuthors = m.authors.length ? m.authors.map(a => {
+        if (typeof a === 'string') {
+          return a;
+        }
+        return a.name;
+      }) : [m.author];
+      return {
+        id: m.id || m.name,
+        version: m.version,
+        author: Array.from(new Set(moduleAuthors)).join(', '),
+        manifest: m.manifest,
+      };
+    });
+
+    this.download(data, Core.getFilename('foundry-environment'));
   }
 
   static exportGameSettings() {
@@ -429,7 +469,22 @@ export default class Core extends FormApplication {
         };
     }),
     );
-    this.download(data, 'foundry-settings-export.json');
+    this.download(data, Core.getFilename('foundry-settings-export'));
+  }
+
+  static padNumber(number) {
+    return (number < 10 ? '0' : '') + number;
+  }
+
+  static getFilename(filename) {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const MM = Core.padNumber(now.getMonth() + 1); // getMonth() is zero-based
+    const dd  = Core.padNumber(now.getDate());
+    const hh = Core.padNumber(now.getHours());
+    const mm = Core.padNumber(now.getMinutes());
+    const ss = Core.padNumber(now.getSeconds());
+    return `${filename}-${yyyy}-${MM}-${dd}-${hh}-${mm}-${ss}.json`;
   }
 
   static importGameSettingsQuick() {
