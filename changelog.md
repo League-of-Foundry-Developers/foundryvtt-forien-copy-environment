@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.1.5
+
+- Allow non-GM users to use the module.
+  - Fixes [#32](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/32)
+  - Users will see errors for any settings they do not have permission to update.
+- Removed deprecated fields in module manifest.
+  - Fixes [#33](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/33)
+
 ## v2.1.4
 
 - Added timestamp to file export.
