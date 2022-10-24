@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.6
+
+- Exclude invalid settings from export [#35](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/35)
+
 ## v2.1.5
 
 - Allow non-GM users to use the module.
