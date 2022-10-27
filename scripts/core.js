@@ -447,7 +447,7 @@ export default class Core extends FormApplication {
             return !sameValue && !excludeModules.some((e) => v.namespace === e);
           } catch (e) {
             console.error(`Copy Environment | Could not export settings for ${v.namespace}.${v.key} due to an error. Please report this as an issue on GitHub.`, e);
-            return true;
+            return false;
           }
         })
         .map(([k, v]) => ({
