@@ -1,0 +1,30 @@
+{
+  "forien-copy-environment": {
+    "menu": {
+      "copy": "Copiar como texto",
+      "save": "Copiar como JSON",
+      "export": "Exportar Configurações",
+      "import": "Importar Configurações"
+    },
+    "title": "Importar Configurações",
+    "intro": "Este formulário permite que você selecione quais configurações do mundo e jogador você deseja importar.",
+    "message": "Lista gerada com Forien's Copy Environment: https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",
+    "copiedToClipboard": "Dados do ambiente copiados para a área de transferência!",
+    "updatedReloading": "Configurações do mundo atualizadas. Recarregando o mundo em 5 segundos...",
+    "import": {
+      "title": "Configurações do mundo",
+      "save": "Configurações de importação",
+      "playerList": "Importar configurações para os seguintes jogadores:",
+      "existing": "Importar uma Exportação existente:",
+      "property": "Propriedade",
+      "newValue": "Novo Valor",
+      "currentValue": "Valor Atual",
+      "notFound": "Os seguintes usuários no arquivo de importação não existem neste mundo e serão ignorados",
+      "existingValue": "Valores existentes que permanecem inalterados e serão ignorados:",
+      "existingPlayerValues": "Jogadores existentes que permanecem inalterados e serão ignorados:",
+      "updatedPlayer": "Configurações do jogador atualizadas para: {name}",
+      "noChanges": "Não há diferenças entre o mundo atual e as configurações importadas.",
+      "showSettings": "Mostrar {count} configurações"
+    }
+  }
+}

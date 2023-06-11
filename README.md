@@ -57,6 +57,7 @@ module.json
 
 - Japanese by touge
 - German by brockhaus
+- Portuguese by vithort
 
 ## Support
 
