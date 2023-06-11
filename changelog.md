@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.1.7
+
+- Mark compatible with v11.
+- Append world name to the generated settings file on export.
+- Added Portuguese by vithort
+
 ## v2.1.6
 
 - Exclude invalid settings from export [#35](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/35)

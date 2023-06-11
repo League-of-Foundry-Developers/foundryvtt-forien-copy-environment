@@ -484,7 +484,7 @@ export default class Core extends FormApplication {
     const hh = Core.padNumber(now.getHours());
     const mm = Core.padNumber(now.getMinutes());
     const ss = Core.padNumber(now.getSeconds());
-    return `${filename}-${yyyy}-${MM}-${dd}-${hh}-${mm}-${ss}.json`;
+    return `${filename}-${yyyy}-${MM}-${dd}-${hh}-${mm}-${ss}-${game.world.id}.json`;
   }
 
   static importGameSettingsQuick() {
