@@ -439,6 +439,12 @@ export default class Core extends FormApplication {
       Array.from(game.settings.settings)
         .filter(([k, v]) => {
           try {
+            if (v.namespace === 'core' && v.key === 'compendiumConfiguration') {
+              // The Compendium Configuration setting maps compendiums to folders, and the FolderIDs
+              // change in a new world, so migrating this value breaks the mapping.
+              return false;
+            }
+
             const value = game.settings.get(v.namespace, v.key);
             let sameValue = value === v.default;
             if (value && typeof value === 'object' && v.default && typeof v.default === 'object') {

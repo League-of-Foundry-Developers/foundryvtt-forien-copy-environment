@@ -22,12 +22,12 @@
   "flags": {
     "allowBugReporter": true
   },
-  "version": "2.1.7",
   "minimumCoreVersion": "0.6.0",
   "compatibleCoreVersion": "11",
+  "version": "2.1.8",
   "compatibility": {
     "minimum": "0.6.0",
-    "verified": "11.301"
+    "verified": "11.305"
   },
   "scripts": [],
   "esmodules": [
