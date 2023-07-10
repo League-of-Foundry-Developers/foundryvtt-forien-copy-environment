@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.8
+
+- Exclude "core.compendiumConfiguration" setting from exports due to the folder ID mapping not being consistent across worlds anyway.
+
 ## v2.1.7
 
 - Mark compatible with v11.
