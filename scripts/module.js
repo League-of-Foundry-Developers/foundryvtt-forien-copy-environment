@@ -8,6 +8,16 @@ Hooks.once('init', function () {
     type: Object,
     default: {},
   });
+
+  game.settings.register(name, 'diff-length', {
+    scope: 'world',
+    config: true,
+    type: Number,
+    default: 500,
+    name: "forien-copy-environment.settings.max-diff",
+    hint: "forien-copy-environment.settings.max-diff-hint",
+    requiresReload: false,
+  });
 });
 
 Hooks.once('devModeReady', ({registerPackageDebugFlag}) => {

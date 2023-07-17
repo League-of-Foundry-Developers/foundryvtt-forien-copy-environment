@@ -6,6 +6,10 @@
       "export": "設定のエクスポート",
       "import": "設定のインポート"
     },
+    "settings": {
+      "max-diff": "文字数",
+      "max-diff-hint": "差異ごとに表示する最大文字数。 すべてを表示するには 0 に設定します。"
+    },
     "title": "インポート設定",
     "intro": "このフォームでは、ワールドとプレイヤーのどの設定をインポートするかを選択します。",
     "message": "このリストは「Forien's Copy Environment」で作成されました： https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",

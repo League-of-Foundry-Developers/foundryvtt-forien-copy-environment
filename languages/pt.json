@@ -6,6 +6,10 @@
       "export": "Exportar Configurações",
       "import": "Importar Configurações"
     },
+    "settings": {
+      "max-diff": "Número de caracteres",
+      "max-diff-hint": "Número máximo de caracteres a serem exibidos por diferença. Defina como 0 para mostrar tudo."
+    },
     "title": "Importar Configurações",
     "intro": "Este formulário permite que você selecione quais configurações do mundo e jogador você deseja importar.",
     "message": "Lista gerada com Forien's Copy Environment: https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",

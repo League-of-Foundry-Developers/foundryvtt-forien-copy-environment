@@ -6,6 +6,10 @@
       "export": "Einstellungen exportieren",
       "import": "Einstellungen importieren"
     },
+    "settings": {
+      "max-diff": "Anzahl von Charakteren",
+      "max-diff-hint": "Maximale Anzahl der pro Unterschied anzuzeigenden Zeichen. Auf 0 setzen, um alle anzuzeigen."
+    },
     "title": "Einstellungen importieren",
     "intro": "Bitte wähle aus, welche Welt- und Spieler-Einstellungen Du importieren möchtest.",
     "message": "Die Liste wurde generiert mit Forien's Copy Environment: https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",
