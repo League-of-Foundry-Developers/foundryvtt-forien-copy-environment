@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.1.9
+
+- Added a module setting to set the maximum number of characters to display when displaying differences.
+  - This is to help with the issue where a "maximum call stack size exceeded" error may occur with very large export files (see [issue #43](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/43)).
+  - The default is 500 characters per difference.
+- Added machine translations for the new setting strings:
+  - German
+  - Japanese
+  - Portuguese
+
 ## v2.1.8
 
 - Exclude "core.compendiumConfiguration" setting from exports due to the folder ID mapping not being consistent across worlds anyway.

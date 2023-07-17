@@ -1,4 +1,4 @@
-import {name, isV10orNewer, templates, log} from './config.js';
+import { name, isV10orNewer, templates, log } from './config.js';
 import Setting from './setting.js';
 
 export default class Core extends FormApplication {
@@ -513,6 +513,7 @@ export default class Core extends FormApplication {
         coreSettings.render(true);
       } catch (e) {
         console.error('Copy Environment | Could not parse import data.', e);
+        console.error('Copy Environment | If you see an error for "maximum call stack size exceeded", try reducing the "Number of Characters" setting.');
       }
     });
   }

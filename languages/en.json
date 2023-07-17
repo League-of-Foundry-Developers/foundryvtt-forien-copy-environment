@@ -6,6 +6,10 @@
       "export": "Export Settings",
       "import": "Import Settings"
     },
+    "settings": {
+      "max-diff": "Number of characters",
+      "max-diff-hint": "Maximum number of characters to show per difference. Set to 0 to show all."
+    },
     "title": "Import Settings",
     "intro": "This form allows you to select which world and player settings you want to import.",
     "message": "List generated with Forien's Copy Environment: https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",
