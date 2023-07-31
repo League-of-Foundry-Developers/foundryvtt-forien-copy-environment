@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.2.0
+
+- Re-added "core.compendiumConfiguration" setting to exports to export Compendium Folder structure mappings.
+  - Settings will try to map the folder IDs to the new world's folder IDs based on the compendium key.
+  - Added supporting folder data structure to the export.
+  - Settings will utilise the supporting folder data structure to re-create the folders where it can.
+  - **Important note**: any exports prior to v2.2.0 won't have this support folder data included in the exported file so might not map correctly on the new world. *Please export your world settings again.*
+  - See [issue #45](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/45).
+
 ## v2.1.9
 
 - Added a module setting to set the maximum number of characters to display when displaying differences.

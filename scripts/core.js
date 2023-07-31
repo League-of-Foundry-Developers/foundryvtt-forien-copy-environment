@@ -16,6 +16,7 @@ export default class Core extends FormApplication {
     this.notChangedPlayers = [];
     this.notFoundPlayers = [];
     this.selectedProperties = game.settings.get(name, 'selected-properties') || {};
+    this.supportingData = {};
 
     if (settings && Array.isArray(settings)) {
       log(true, 'Parsing provided settings', settings);
@@ -62,6 +63,10 @@ export default class Core extends FormApplication {
                 }
                 this.playerSettings.push(setting.value);
                 this.hasPlayerSettings = true;
+                break;
+              case Setting.SupportingDataType:
+                // Merge setting value with existing support data
+                this.supportingData = foundry.utils.mergeObject(this.supportingData, setting.value);
                 break;
               default:
                 throw new Error(`Unknown setting type: ${setting.type}`);
@@ -246,7 +251,7 @@ export default class Core extends FormApplication {
     }
 
     try {
-      await Core.processSettings(changes);
+      await this.processSettings(changes);
     } catch (e) {
       console.error('Import world settings: error', e);
       return false;
@@ -434,17 +439,11 @@ export default class Core extends FormApplication {
   static exportGameSettings() {
     const excludeModules = game.data.modules.filter((m) => m.flags?.noCopyEnvironmentSettings || m.data?.flags?.noCopyEnvironmentSettings).map((m) => m.id) || [];
 
-    // Return an array with both the world settings and player settings together.
+    // Return an array with both the world settings and player settings along with their support data.
     let data = Array.prototype.concat(
       Array.from(game.settings.settings)
         .filter(([k, v]) => {
           try {
-            if (v.namespace === 'core' && v.key === 'compendiumConfiguration') {
-              // The Compendium Configuration setting maps compendiums to folders, and the FolderIDs
-              // change in a new world, so migrating this value breaks the mapping.
-              return false;
-            }
-
             const value = game.settings.get(v.namespace, v.key);
             let sameValue = value === v.default;
             if (value && typeof value === 'object' && v.default && typeof v.default === 'object') {
@@ -474,6 +473,14 @@ export default class Core extends FormApplication {
           flags: userData.flags,
         };
     }),
+    [
+      {
+        type: Setting.SupportingDataType,
+        value: {
+          compendiumFolders: game.folders.filter((f) => f.type === 'Compendium').map(f => f.toObject()),
+        }
+      }
+    ],
     );
     this.download(data, Core.getFilename('foundry-settings-export'));
   }
@@ -518,11 +525,11 @@ export default class Core extends FormApplication {
     });
   }
 
-  static async processSettings(settings) {
+  async processSettings(settings) {
     if (isNewerVersion((game.version || game.data.version), '0.7.9')) {
       const updates = [];
       const creates = [];
-      settings.forEach(data => {
+      for (const data of settings) {
         const config = game.settings.settings.get(data.key);
         if (config?.scope === 'client') {
           const storage = game.settings.storage.get(config.scope);
@@ -531,6 +538,40 @@ export default class Core extends FormApplication {
           }
         } else if (game.user.isGM) {
           const existing = game.data.settings.find((s) => s.key === data.key);
+
+          if (data.key === 'core.compendiumConfiguration') {
+            // The Compendium Configuration setting maps compendiums to folders, and the FolderIDs
+            // change in a new world, so migrating this value as is breaks the mapping.
+            // Attempt to update the IDs to match the new world, but if that fails, just use the
+            // existing value.
+            try {
+              const existingCompendiumMap = JSON.parse(existing.value);
+              const newCompendiumMap = JSON.parse(data.value);
+              const missingEntries = new Map();
+
+              // Replace IDs in the new map with the existing IDs if they exist.
+              for (const [key, value] of Object.entries(newCompendiumMap)) {
+                if (game.folders.get(existingCompendiumMap[key]?.folder)) {
+                  newCompendiumMap[key].folder = existingCompendiumMap[key].folder;
+                } else {
+                  missingEntries.set(key, value);
+                }
+              }
+
+              // Add any missing entries to the new map based on the supporting data.
+              for (const [key, value] of missingEntries) {
+                const folder = await this.createFolderRecursive(value?.folder);
+                if (folder?.id) {
+                  newCompendiumMap[key].folder = folder.id;
+                }
+              }
+
+              data.value = JSON.stringify(newCompendiumMap);
+            } catch (e) {
+              console.warn('Copy Environment | Could not process compendium configuration, overwriting value rather than merging.', e);
+            }
+          }
+
           if (existing?._id) {
             updates.push({
               _id: existing._id,
@@ -544,7 +585,7 @@ export default class Core extends FormApplication {
             });
           }
         }
-      });
+      }
       try {
         if (updates.length) {
           log(true, `Updating ${updates.length} world settings.`, updates);
@@ -569,6 +610,7 @@ export default class Core extends FormApplication {
       }
       return false;
     }
+
     for (const setting of settings) {
       const config = game.settings.settings.get(setting.key);
       if (config?.scope === 'client') {
@@ -589,5 +631,30 @@ export default class Core extends FormApplication {
         return false;
       }
     }
+  }
+
+  // Recursively create folders for compendiums based on the supporting data.
+  async createFolderRecursive(folderID) {
+    if (game.folders.get(folderID)) {
+      return game.folders.get(folderID);
+    }
+
+    const folderData = this.supportingData?.compendiumFolders?.find(f => f._id === folderID);
+    if (!folderData) {
+      return undefined;
+    }
+
+    // Create missing folder
+    console.log(`Copy Environment | Creating missing folder "${folderData.name}" with ID ${folderID}`);
+    // Check that the parent folder exists
+    if (folderData.folder && !game.folders.get(folderData.folder)) {
+      // Create missing parent folder
+      const parentFolder = await this.createFolderRecursive(folderData.folder);
+      if (parentFolder?.id) {
+        folderData.folder = parentFolder.id;
+      }
+    }
+
+    return Folder.create(folderData, { keepId: true });
   }
 }

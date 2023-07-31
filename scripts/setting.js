@@ -20,12 +20,16 @@ export default class Setting {
     } else if (data.name) {
       this.type = Setting.PlayerType;
       this.value = new PlayerSetting(this.data);
+    } else if (data.type === Setting.SupportingDataType) {
+      this.type = Setting.SupportingDataType;
+      this.value = data.value;
     }
   }
 
   static UnknownType = '_unknownType';
   static PlayerType = '_playerType';
   static WorldType = '_worldType';
+  static SupportingDataType = '_supportingDataType';
 
   isWorldSetting() {
     return this.type === Setting.WorldType;
@@ -33,6 +37,10 @@ export default class Setting {
 
   isPlayerSetting() {
     return this.type === Setting.PlayerType;
+  }
+
+  isSupportingDataSetting() {
+    return this.type === Setting.SupportingDataType;
   }
 
   hasChanges() {
