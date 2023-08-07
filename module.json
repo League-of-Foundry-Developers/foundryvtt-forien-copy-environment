@@ -24,10 +24,10 @@
   },
   "minimumCoreVersion": "0.6.0",
   "compatibleCoreVersion": "11",
-  "version": "2.1.9",
+  "version": "2.2.0",
   "compatibility": {
     "minimum": "0.6.0",
-    "verified": "11.305"
+    "verified": "11.306"
   },
   "scripts": [],
   "esmodules": [
