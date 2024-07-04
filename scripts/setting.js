@@ -95,8 +95,8 @@ export class WorldSetting {
         newValue = JSON.parse(newValue);
       }
       if (typeof existingSetting === 'object' && typeof newValue === 'object') {
-        let diff = diffObject(existingSetting, newValue);
-        if (typeof isEmpty === 'function' ? isEmpty(diff) : isObjectEmpty(diff)) {
+        let diff = foundry.utils.diffObject(existingSetting, newValue);
+        if (typeof foundry.utils.isEmpty === 'function' ? foundry.utils.isEmpty(diff) : foundry.utils.isObjectEmpty(diff)) {
           // No difference in the underlying object.
           return new Difference(this.key, null, null);
         }
@@ -167,7 +167,7 @@ export class PlayerSetting {
       );
     }
 
-    let flagDiff = diffObject(userData.flags, setting.flags);
+    let flagDiff = foundry.utils.diffObject(userData.flags, setting.flags);
     for (const prop in flagDiff) {
       if (!flagDiff.hasOwnProperty(prop)) {
         continue;
@@ -198,13 +198,13 @@ export class PlayerSetting {
    * @returns boolean
    */
   hasDataChanges() {
-    if (typeof isEmpty === 'function') {
-      return !isEmpty(this.playerDifferences) || !isEmpty(this.playerFlagDifferences);
+    if (typeof foundry.utils.isEmpty === 'function') {
+      return !foundry.utils.isEmpty(this.playerDifferences) || !foundry.utils.isEmpty(this.playerFlagDifferences);
     }
 
     return (
-      !isObjectEmpty(this.playerDifferences) ||
-      !isObjectEmpty(this.playerFlagDifferences)
+      !foundry.utils.isObjectEmpty(this.playerDifferences) ||
+      !foundry.utils.isObjectEmpty(this.playerFlagDifferences)
     );
   }
 }

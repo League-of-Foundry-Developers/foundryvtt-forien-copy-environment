@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.2.1
+
+- v12 compatibility.
+
 ## v2.2.0
 
 - Re-added "core.compendiumConfiguration" setting to exports to export Compendium Folder structure mappings.

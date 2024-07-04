@@ -6,7 +6,7 @@ export const templates = {
 
 export function isV10orNewer() {
   const gameVersion = game.version || game.data.version;
-  return gameVersion === '10.0' || isNewerVersion(gameVersion, '10');
+  return gameVersion === '10.0' || foundry.utils.isNewerVersion(gameVersion, '10');
 }
 
 export function log(force, ...args) {

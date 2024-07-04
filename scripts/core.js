@@ -93,7 +93,7 @@ export default class Core extends FormApplication {
   }
 
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ['copy-environment-settings'],
       height: 'auto',
       width: Math.ceil(window.innerWidth / 2),
@@ -307,7 +307,7 @@ export default class Core extends FormApplication {
       return false;
     }
 
-    if (Object.keys(changes).length === 1 && (typeof isEmpty === 'function' ? isEmpty(changes.flags) : isObjectEmpty(changes.flags))) {
+    if (Object.keys(changes).length === 1 && (typeof foundry.utils.isEmpty === 'function' ? foundry.utils.isEmpty(changes.flags) : foundry.utils.isObjectEmpty(changes.flags))) {
       log(true, 'No changes selected for', targetUser?.name);
       return false;
     }
@@ -447,7 +447,7 @@ export default class Core extends FormApplication {
             const value = game.settings.get(v.namespace, v.key);
             let sameValue = value === v.default;
             if (value && typeof value === 'object' && v.default && typeof v.default === 'object') {
-              sameValue = !Object.keys(diffObject(v.default, value)).length && !Object.keys(diffObject(value, v.default)).length;
+              sameValue = !Object.keys(foundry.utils.diffObject(v.default, value)).length && !Object.keys(foundry.utils.diffObject(value, v.default)).length;
             }
             return !sameValue && !excludeModules.some((e) => v.namespace === e);
           } catch (e) {
@@ -526,7 +526,7 @@ export default class Core extends FormApplication {
   }
 
   async processSettings(settings) {
-    if (isNewerVersion((game.version || game.data.version), '0.7.9')) {
+    if (foundry.utils.isNewerVersion((game.version || game.data.version), '0.7.9')) {
       const updates = [];
       const creates = [];
       for (const data of settings) {
@@ -593,6 +593,11 @@ export default class Core extends FormApplication {
             type: 'Setting',
             action: 'update',
             updates: updates,
+            operation: {
+              pack: null,
+              parent: null,
+              updates: updates,
+            }
           });
         }
         if (creates.length) {
@@ -601,6 +606,11 @@ export default class Core extends FormApplication {
             type: 'Setting',
             action: 'create',
             data: creates,
+            operation: {
+              pack: null,
+              parent: null,
+              data: creates,
+            }
           });
         }
         return true;
