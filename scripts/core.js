@@ -593,6 +593,11 @@ export default class Core extends FormApplication {
             type: 'Setting',
             action: 'update',
             updates: updates,
+            operation: {
+              pack: null,
+              parent: null,
+              updates: updates,
+            }
           });
         }
         if (creates.length) {
@@ -601,6 +606,11 @@ export default class Core extends FormApplication {
             type: 'Setting',
             action: 'create',
             data: creates,
+            operation: {
+              pack: null,
+              parent: null,
+              data: creates,
+            }
           });
         }
         return true;
