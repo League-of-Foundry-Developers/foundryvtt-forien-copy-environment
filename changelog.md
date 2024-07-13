@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.2.2
+
+- Ignore "core.time" and "pf2e.worldClock.worldCreatedOn" values by default.
+  - These values can still be selected in from the importer dialog but will be unselected by default.
+  - You may run `game.settings.set('forien-copy-environment', 'selected-properties', undefined);` as a script macro to reset the values to their default.
+  - See [issue #53](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/53).
+
 ## v2.2.1
 
 - v12 compatibility.

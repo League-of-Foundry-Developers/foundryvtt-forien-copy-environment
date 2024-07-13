@@ -15,7 +15,10 @@ export default class Core extends FormApplication {
     this.notChangedSettings = [];
     this.notChangedPlayers = [];
     this.notFoundPlayers = [];
-    this.selectedProperties = game.settings.get(name, 'selected-properties') || {};
+    this.selectedProperties = game.settings.get(name, 'selected-properties') || {
+      'core.time': false,
+      'pf2e.worldClock.worldCreatedOn': false,
+    };
     this.supportingData = {};
 
     if (settings && Array.isArray(settings)) {
