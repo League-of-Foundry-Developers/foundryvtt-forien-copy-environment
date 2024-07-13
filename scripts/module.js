@@ -6,7 +6,10 @@ Hooks.once('init', function () {
     scope: 'client',
     config: false,
     type: Object,
-    default: {},
+    default: {
+      'core.time': false,
+      'pf2e.worldClock.worldCreatedOn': false,
+    },
   });
 
   game.settings.register(name, 'diff-length', {
