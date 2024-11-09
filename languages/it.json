@@ -28,7 +28,9 @@
       "existingPlayerValues": "Giocatori esistenti che non sono cambiati e verranno ignorati:",
       "updatedPlayer": "Impostazioni giocatore aggiornate per: {name}",
       "noChanges": "Non ci sono differenze tra il mondo attuale e le impostazioni importate.",
-      "showSettings": "Mostra {count} impostazioni"
+      "showSettings": "Mostra {count} impostazioni",
+      "warning": "Avvertenza",
+      "warningMessage": "Hai scelto di non importare i moduli selezionati. Se questo non era intenzionale, abilita il valore \"core.moduleConfiguration\" sopra."
     }
   }
 }

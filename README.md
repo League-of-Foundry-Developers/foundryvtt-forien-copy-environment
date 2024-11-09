@@ -6,7 +6,7 @@
 
 **NOTE** This is an unofficial forked version of the module maintained by the League of Foundry Developers to provide module continuity while Forien is unavailable.
 
-**[Compatibility]**: *FoundryVTT* 0.6.0 - 11.0+
+**[Compatibility]**: *FoundryVTT* 0.6.0 - 12.0+
 
 **[Systems]**: *any*
 
@@ -58,6 +58,8 @@ module.json
 - Japanese by touge
 - German by brockhaus
 - Portuguese by vithort
+- Italian by GregoryWarn
+- French by rectulo
 
 ## Support
 

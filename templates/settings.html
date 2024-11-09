@@ -1,5 +1,5 @@
-<form class="{{classes}}" autocomplete="off">
-  <h2>{{localize 'forien-copy-environment.intro'}}</h2>
+<form class="flexcol {{classes}}" autocomplete="off">
+  <h2 class="noflex">{{localize 'forien-copy-environment.intro'}}</h2>
 
   <section class="import-properties">
   {{#if hasWorldSettings}}
@@ -113,7 +113,11 @@
   {{/unless}}
   </section>
 
-  <div class="flexrow">
+  <div class="noflex core-module-warning {{#unless shouldShowCoreModuleWarning}}hidden{{/unless}}">
+    <p><strong>{{localize 'forien-copy-environment.import.warning'}}:</strong> {{localize 'forien-copy-environment.import.warningMessage'}}</p>
+  </div>
+
+  <div class="noflex">
     {{#if hasChanges}}<button type="button" class="import"><i class="fas fa-save"></i>
       {{localize 'forien-copy-environment.import.save'}}</button>{{/if}}
     <button type="button" class="close"><i class="fas fa-close"></i> {{localize 'Close'}}</button>
