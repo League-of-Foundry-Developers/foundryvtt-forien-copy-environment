@@ -28,7 +28,9 @@
       "existingPlayerValues": "Bereits existierende Spieler, die unverändert sind und deshalb ausgelassen werden:",
       "updatedPlayer": "Spieler Einstellungen angepasst für: {name}",
       "noChanges": "Es gibt keinen Unterschied zwischen der aktuellen Welt und den zu importierenden Einstellungen.",
-      "showSettings": "{count} Einstellungen anzeigen"
+      "showSettings": "{count} Einstellungen anzeigen",
+      "warning": "Warnung",
+      "warningMessage": "Sie haben sich entschieden, die ausgewählten Module nicht zu importieren. Falls dies unbeabsichtigt war, aktivieren Sie den oben stehenden Wert \"core.moduleConfiguration\""
     }
   }
 }

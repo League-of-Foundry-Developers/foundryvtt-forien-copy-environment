@@ -106,6 +106,11 @@ export default class Core extends FormApplication {
     });
   }
 
+  // shouldShowCoreModuleWarning returns true if the core module configuration is not selected.
+  shouldShowCoreModuleWarning() {
+    return !this.selectedProperties['core.moduleConfiguration'];
+  }
+
   getData() {
     return {
       settings: this.settings,
@@ -117,6 +122,7 @@ export default class Core extends FormApplication {
       notChangedPlayers: this.notChangedPlayers,
       notFoundPlayers: this.notFoundPlayers,
       selectedProperties: this.selectedProperties,
+      shouldShowCoreModuleWarning: this.shouldShowCoreModuleWarning(),
     };
   }
 
@@ -189,9 +195,15 @@ export default class Core extends FormApplication {
       }
 
       console.log(`Setting ${el.target.name} to ${el.target.checked}`);
-      const selectedProperties = game.settings.get(name, 'selected-properties');
-      selectedProperties[el.target.name] = el.target.checked;
-      game.settings.set(name, 'selected-properties', selectedProperties);
+      this.selectedProperties[el.target.name] = el.target.checked;
+      game.settings.set(name, 'selected-properties', this.selectedProperties);
+
+      if (el.target.name === 'core.moduleConfiguration') {
+        // Update the warning visibility when the core module configuration setting changes.
+        $(el.target.closest('form'))
+          .find('.core-module-warning')
+          .toggleClass('hidden', !this.shouldShowCoreModuleWarning());
+      }
 
       updateCheckboxStates(el.target);
     });

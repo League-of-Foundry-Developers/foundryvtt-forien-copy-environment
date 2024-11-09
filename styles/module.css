@@ -7,7 +7,7 @@
   vertical-align: top;
 }
 #forien-copy-environment-settings fieldset td:first-of-type {
-  min-width: 20%;
+  width: 21%;
 }
 #forien-copy-environment-settings form {
   max-height: 100%;
@@ -23,7 +23,9 @@
   cursor: pointer;
 }
 #forien-copy-environment-settings section.import-properties {
-  max-height: calc(100% - 82px);
   overflow: auto;
   margin-bottom: 10px;
+}
+#forien-copy-environment-settings .noflex {
+  flex: 0;
 }

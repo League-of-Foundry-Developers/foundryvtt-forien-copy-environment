@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.2.3
+
+- Made it clearer when modules will not be enabled due to the selected config settings.
+  - This is one of the primary use cases of this module, so most of the time it is an accident to uncheck the setting.
+  - See [issue #49](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/49).
+
 ## v2.2.2
 
 - Ignore "core.time" and "pf2e.worldClock.worldCreatedOn" values by default.

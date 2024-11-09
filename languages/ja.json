@@ -28,7 +28,9 @@
       "existingPlayerValues": "次のプレイヤーは変更がないためスキップされます：",
       "updatedPlayer": "次のプレイヤーの設定を更新しました：{name}",
       "noChanges": "現在のワールド設定とインポートした設定に差異がありません。",
-      "showSettings": "{count} の設定を表示"
+      "showSettings": "{count} の設定を表示",
+      "warning": "警告",
+      "warningMessage": "選択したモジュールをインポートしないことを選択しました。これが意図しない場合は、上記の「core.moduleConfiguration」値を有効にしてください。"
     }
   }
 }

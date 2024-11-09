@@ -28,7 +28,9 @@
       "existingPlayerValues": "Existing players that are unchanged and will be skipped:",
       "updatedPlayer": "Updated player settings for: {name}",
       "noChanges": "There are no differences between the current world and the imported settings.",
-      "showSettings": "Show {count} settings"
+      "showSettings": "Show {count} settings",
+      "warning": "Warning",
+      "warningMessage": "You have chosen not to import the selected modules. If this was unintentional, enable the \"core.moduleConfiguration\" value above."
     }
   }
 }
