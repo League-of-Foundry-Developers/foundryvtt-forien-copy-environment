@@ -5,6 +5,14 @@
 - Made it clearer when modules will not be enabled due to the selected config settings.
   - This is one of the primary use cases of this module, so most of the time it is an accident to uncheck the setting.
   - See [issue #49](https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues/49).
+- Added Italian translation by GregoryWarn.
+- Added French translation by rectulo.
+- Added machine translations for the new setting strings:
+  - German
+  - Japanese
+  - Portuguese
+  - Italian
+  - French
 
 ## v2.2.2
 

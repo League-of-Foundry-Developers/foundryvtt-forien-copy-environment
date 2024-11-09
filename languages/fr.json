@@ -1,0 +1,36 @@
+{
+  "forien-copy-environment": {
+    "menu": {
+      "copy": "Copier comme texte",
+      "save": "Copier comme JSON",
+      "export": "Exporter les réglages",
+      "import": "Importer les réglages"
+    },
+    "settings": {
+      "max-diff": "Nombre de caractères",
+      "max-diff-hint": "Nombre maximal de caractères pour montrer par différence. Régler à 0 pour tout montrer."
+    },
+    "title": "Importer les réglages",
+    "intro": "Ce formulaire vous permet de sélectionner les réglages du monde et des joueurs que vous souhaitez importer.",
+    "message": "Liste générée avec Forien's Copy Environment: https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",
+    "copiedToClipboard": "Données d'environnement copiées dans le presse-papier!",
+    "updatedReloading": "Réglages du monde mises à jour. Rechargement du monde dans 5 sec...",
+    "import": {
+      "title": "Réglages du monde",
+      "save": "Réglages d'importation",
+      "playerList": "Importer les réglages pour les joueurs suivants:",
+      "existing": "Importer un export existant:",
+      "property": "Propriété",
+      "newValue": "Nouvelle Valeur",
+      "currentValue": "Valeur actuelle",
+      "notFound": "Les utilisateurs suivants dans le fichier d'importation n'existent pas dans ce monde et seront ignorés.",
+      "existingValue": "Les valeurs existantes qui ne sont pas modifiées seront ignorées:",
+      "existingPlayerValues": "Les joueurs existants qui ne sont pas modifiés seront ignorés:",
+      "updatedPlayer": "Paramètre des joueurs mis à jour pour: {name}",
+      "noChanges": "Il n'y a pas de différences entre le monde actuel et les réglagess importés.",
+      "showSettings": "Afficher {count} paramètres",
+      "warning": "Avertissement",
+      "warningMessage": "Vous avez choisi de ne pas importer les modules sélectionnés. Si cela n’était pas intentionnel, activez la valeur \"core.moduleConfiguration\" ci-dessus."
+    }
+  }
+}
