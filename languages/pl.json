@@ -1,0 +1,36 @@
+{
+  "forien-copy-environment": {
+    "menu": {
+      "copy": "Kopiuj jako tekst",
+      "save": "Kopiuj jako JSON",
+      "export": "Eksportuj ustawienia",
+      "import": "Importuj ustawienia"
+    },
+    "settings": {
+      "max-diff": "Liczba znaków",
+      "max-diff-hint": "Maksymalna liczba znaków do wyświetlenia różnicy. Ustaw na 0, aby wyświetlić wszystkie."
+    },
+    "title": "Importuj ustawienia",
+    "intro": "Ten formularz pozwala wybrać ustawienia świata i gracza, które mają zostać zaimportowane.",
+    "message": "Lista wygenerowana za pomocą Forien's Copy Environment: https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",
+    "copiedToClipboard": "Dane środowiskowe skopiowane do schowka!",
+    "updatedReloading": "Zaktualizowano ustawienia świata. Przeładowanie świata za 5 sekund...",
+    "import": {
+      "title": "Ustawienia świata",
+      "save": "Importuj ustawienia",
+      "playerList": "Importuj ustawienia dla następujących graczy:",
+      "existing": "Importowanie istniejącego eksportu:",
+      "property": "Własność",
+      "newValue": "Nowa wartość",
+      "currentValue": "Obecna wartość",
+      "notFound": "Następujący użytkownicy w pliku importu nie istnieją w tym świecie i zostaną pominięci.",
+      "existingValue": "Istniejące wartości, które pozostaną niezmienione i zostaną pominięte:",
+      "existingPlayerValues": "Istniejący gracze, którzy nie ulegli zmianie i zostaną pominięci:",
+      "updatedPlayer": "Zaktualizowano ustawienia gracza dla: {name}",
+      "noChanges": "Nie ma żadnych różnic między obecnym światem a zaimportowanymi ustawieniami.",
+      "showSettings": "Pokaż {count} ustawień",
+      "warning": "Ostrzeżenie",
+      "warningMessage": "Wybrane moduły nie zostały zaimportowane. Jeśli było to niezamierzone, włącz powyższą wartość „core.moduleConfiguration”."
+    }
+  }
+}
