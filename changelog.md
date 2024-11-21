@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.2.4
+
+- Added Polish translation by Lioheart.
+- Enabled Italian and French translations.
+
 ## v2.2.3
 
 - Made it clearer when modules will not be enabled due to the selected config settings.

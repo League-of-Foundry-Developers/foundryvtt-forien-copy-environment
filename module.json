@@ -24,7 +24,7 @@
   },
   "minimumCoreVersion": "0.6.0",
   "compatibleCoreVersion": "12",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "compatibility": {
     "minimum": "0.6.0",
     "verified": "12"
@@ -61,6 +61,16 @@
       "lang": "pl",
       "name": "Polski",
       "path": "languages/pl.json"
+    },
+    {
+      "lang": "it",
+      "name": "Italiano",
+      "path": "languages/it.json"
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "languages/fr.json"
     }
   ],
   "packs": [],
