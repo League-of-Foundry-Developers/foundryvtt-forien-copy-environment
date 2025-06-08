@@ -1,4 +1,4 @@
-import {isV10orNewer, name as moduleName} from './config.js';
+import {name as moduleName} from './config.js';
 
 export default class Setting {
   /**
@@ -141,7 +141,7 @@ export class PlayerSetting {
       return this;
     }
 
-    const userData = isV10orNewer() ? existingUser : existingUser.data;
+    const userData = existingUser;
 
     if (setting.core.color !== userData.color) {
       this.playerDifferences.color = new Difference(

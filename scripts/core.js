@@ -1,4 +1,4 @@
-import { name, isV10orNewer, templates, log } from './config.js';
+import { name, templates, log } from './config.js';
 import Setting from './setting.js';
 
 export default class Core extends FormApplication {
@@ -351,8 +351,8 @@ export default class Core extends FormApplication {
   }
 
   static getText() {
-    const system = isV10orNewer() ? game.data.system : game.data.system.data;
-    const core = game.version || game.data.version;
+    const system = game.data.system;
+    const core = game.version;
 
     let text = `Core Version: ${core}\n\n`;
 
@@ -402,20 +402,15 @@ export default class Core extends FormApplication {
   }
 
   static getModulesForExport() {
-    return (isV10orNewer() ? game.modules : game.data.modules).map(m => {
-      let mod;
-      if (isV10orNewer()) {
-        mod = m.toObject();
-      } else {
-        mod = m.data.toObject();
-      }
+    return game.modules.map(m => {
+      let mod = m.toObject();
       mod.active = m.active;
       return mod;
     }).filter((m) => m.active);
   }
 
   static saveSummaryAsJSON() {
-    const system = isV10orNewer() ? game.data.system : game.data.system.data;
+    const system = game.data.system;
     const systemAuthors = system.authors.length ? system.authors.map(a => {
       if (typeof a === 'string') {
         return a;
@@ -425,7 +420,7 @@ export default class Core extends FormApplication {
 
     const data = {};
     data.core = {
-      version: game.version || game.data.version,
+      version: game.version,
     };
     data.system = {
       id: system.id,
@@ -475,8 +470,7 @@ export default class Core extends FormApplication {
           value: JSON.stringify(game.settings.get(v.namespace, v.key)),
         }))
         .sort((a, b) => a.key.localeCompare(b.key)),
-      game.users.map((u) => {
-        const userData = isV10orNewer() ? u : u.data;
+      game.users.map((userData) => {
         return {
           name: userData.name,
           core: {
@@ -541,120 +535,96 @@ export default class Core extends FormApplication {
   }
 
   async processSettings(settings) {
-    if (foundry.utils.isNewerVersion((game.version || game.data.version), '0.7.9')) {
-      const updates = [];
-      const creates = [];
-      for (const data of settings) {
-        const config = game.settings.settings.get(data.key);
-        if (config?.scope === 'client') {
-          const storage = game.settings.storage.get(config.scope);
-          if (storage) {
-            storage.setItem(data.key, data.value);
-          }
-        } else if (game.user.isGM) {
-          const existing = game.data.settings.find((s) => s.key === data.key);
-
-          if (data.key === 'core.compendiumConfiguration') {
-            // The Compendium Configuration setting maps compendiums to folders, and the FolderIDs
-            // change in a new world, so migrating this value as is breaks the mapping.
-            // Attempt to update the IDs to match the new world, but if that fails, just use the
-            // existing value.
-            try {
-              const existingCompendiumMap = JSON.parse(existing.value);
-              const newCompendiumMap = JSON.parse(data.value);
-              const missingEntries = new Map();
-
-              // Replace IDs in the new map with the existing IDs if they exist.
-              for (const [key, value] of Object.entries(newCompendiumMap)) {
-                if (game.folders.get(existingCompendiumMap[key]?.folder)) {
-                  newCompendiumMap[key].folder = existingCompendiumMap[key].folder;
-                } else {
-                  missingEntries.set(key, value);
-                }
-              }
-
-              // Add any missing entries to the new map based on the supporting data.
-              for (const [key, value] of missingEntries) {
-                const folder = await this.createFolderRecursive(value?.folder);
-                if (folder?.id) {
-                  newCompendiumMap[key].folder = folder.id;
-                }
-              }
-
-              data.value = JSON.stringify(newCompendiumMap);
-            } catch (e) {
-              console.warn('Copy Environment | Could not process compendium configuration, overwriting value rather than merging.', e);
-            }
-          }
-
-          if (existing?._id) {
-            updates.push({
-              _id: existing._id,
-              key: data.key,
-              value: data.value,
-            });
-          } else {
-            creates.push({
-              key: data.key,
-              value: data.value,
-            });
-          }
-        }
-      }
-      try {
-        if (updates.length) {
-          log(true, `Updating ${updates.length} world settings.`, updates);
-          await SocketInterface.dispatch('modifyDocument', {
-            type: 'Setting',
-            action: 'update',
-            updates: updates,
-            operation: {
-              pack: null,
-              parent: null,
-              updates: updates,
-            }
-          });
-        }
-        if (creates.length) {
-          log(true, `Creating ${creates.length} world settings.`, creates);
-          await SocketInterface.dispatch('modifyDocument', {
-            type: 'Setting',
-            action: 'create',
-            data: creates,
-            operation: {
-              pack: null,
-              parent: null,
-              data: creates,
-            }
-          });
-        }
-        return true;
-      } catch (e) {
-        log(true, `Settings update could not be dispatched to server.`);
-        console.error(e);
-      }
-      return false;
-    }
-
-    for (const setting of settings) {
-      const config = game.settings.settings.get(setting.key);
+    const updates = [];
+    const creates = [];
+    for (const data of settings) {
+      const config = game.settings.settings.get(data.key);
       if (config?.scope === 'client') {
         const storage = game.settings.storage.get(config.scope);
-        storage.setItem(setting.key, setting.value);
-      } else if (game.user.isGM) {
-        try {
-          await SocketInterface.dispatch('modifyDocument', {
-            type: 'Setting',
-            action: 'update',
-            data: setting,
-          });
-          return true;
-        } catch (e) {
-          log(true, `Setting key ${setting.key} could not be dispatched to server.`);
-          console.error(e);
+        if (storage) {
+          storage.setItem(data.key, data.value);
         }
-        return false;
+      } else if (game.user.isGM) {
+        const existing = game.data.settings.find((s) => s.key === data.key);
+
+        if (data.key === 'core.compendiumConfiguration') {
+          // The Compendium Configuration setting maps compendiums to folders, and the FolderIDs
+          // change in a new world, so migrating this value as is breaks the mapping.
+          // Attempt to update the IDs to match the new world, but if that fails, just use the
+          // existing value.
+          try {
+            const existingCompendiumMap = JSON.parse(existing.value);
+            const newCompendiumMap = JSON.parse(data.value);
+            const missingEntries = new Map();
+
+            // Replace IDs in the new map with the existing IDs if they exist.
+            for (const [key, value] of Object.entries(newCompendiumMap)) {
+              if (game.folders.get(existingCompendiumMap[key]?.folder)) {
+                newCompendiumMap[key].folder = existingCompendiumMap[key].folder;
+              } else {
+                missingEntries.set(key, value);
+              }
+            }
+
+            // Add any missing entries to the new map based on the supporting data.
+            for (const [key, value] of missingEntries) {
+              const folder = await this.createFolderRecursive(value?.folder);
+              if (folder?.id) {
+                newCompendiumMap[key].folder = folder.id;
+              }
+            }
+
+            data.value = JSON.stringify(newCompendiumMap);
+          } catch (e) {
+            console.warn('Copy Environment | Could not process compendium configuration, overwriting value rather than merging.', e);
+          }
+        }
+
+        if (existing?._id) {
+          updates.push({
+            _id: existing._id,
+            key: data.key,
+            value: data.value,
+          });
+        } else {
+          creates.push({
+            key: data.key,
+            value: data.value,
+          });
+        }
       }
+    }
+    try {
+      if (updates.length) {
+        log(true, `Updating ${updates.length} world settings.`, updates);
+        await SocketInterface.dispatch('modifyDocument', {
+          type: 'Setting',
+          action: 'update',
+          updates: updates,
+          operation: {
+            pack: null,
+            parent: null,
+            updates: updates,
+          }
+        });
+      }
+      if (creates.length) {
+        log(true, `Creating ${creates.length} world settings.`, creates);
+        await SocketInterface.dispatch('modifyDocument', {
+          type: 'Setting',
+          action: 'create',
+          data: creates,
+          operation: {
+            pack: null,
+            parent: null,
+            data: creates,
+          }
+        });
+      }
+      return true;
+    } catch (e) {
+      log(true, `Settings update could not be dispatched to server.`);
+      console.error(e);
     }
   }
 
