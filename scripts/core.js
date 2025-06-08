@@ -1,7 +1,8 @@
 import { name, templates, log } from './config.js';
 import Setting from './setting.js';
 
-export default class Core extends FormApplication {
+// @todo refactor into ApplicationV2 before Foundry v16
+export default class Core extends foundry.appv1.api.FormApplication {
   /**
    * @param {Array.<Object>} settings Read from previously exported settings
    */
@@ -347,7 +348,7 @@ export default class Core extends FormApplication {
 
     let jsonStr = JSON.stringify(data, null, 2);
 
-    saveDataToFile(jsonStr, 'application/json', filename);
+    foundry.utils.saveDataToFile(jsonStr, 'application/json', filename);
   }
 
   static getText() {
@@ -522,7 +523,7 @@ export default class Core extends FormApplication {
       return;
     }
 
-    readTextFromFile(file).then(async (result) => {
+    foundry.utils.readTextFromFile(file).then(async (result) => {
       try {
         const settings = JSON.parse(result);
         let coreSettings = new Core(settings);
