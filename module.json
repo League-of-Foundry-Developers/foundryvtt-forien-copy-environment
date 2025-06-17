@@ -1,9 +1,7 @@
 {
   "id": "forien-copy-environment",
-  "name": "forien-copy-environment",
   "title": "Forien's Copy Environment",
   "description": "Allows for copying list of system/modules and versions, and gives ability to export/import game and player settings",
-  "author": "Blair McMillan",
   "authors": [
     {
       "name": "Blair McMillan",
@@ -19,17 +17,11 @@
   "url": "https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment",
   "bugs": "https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/issues",
   "changelog": "https://github.com/League-of-Foundry-Developers/foundryvtt-forien-copy-environment/blob/master/changelog.md",
-  "flags": {
-    "allowBugReporter": true
-  },
-  "minimumCoreVersion": "0.6.0",
-  "compatibleCoreVersion": "12",
-  "version": "2.2.4",
+  "version": "3.0.0",
   "compatibility": {
-    "minimum": "0.6.0",
-    "verified": "12"
+    "minimum": "13",
+    "verified": "13"
   },
-  "scripts": [],
   "esmodules": [
     "/scripts/module.js"
   ],

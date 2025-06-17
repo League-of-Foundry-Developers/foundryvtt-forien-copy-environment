@@ -28,7 +28,7 @@ Hooks.once('devModeReady', ({registerPackageDebugFlag}) => {
 });
 
 Hooks.on('renderSettings', function (app, html, data) {
-  new ContextMenu(html, 'div.game-system, ul#game-details', [
+  new foundry.applications.ux.ContextMenu.implementation(html, '#settings section.info', [
     {
       name: game.i18n.localize('forien-copy-environment.menu.copy'),
       icon: '<i class="far fa-copy"></i>',
@@ -73,5 +73,5 @@ Hooks.on('renderSettings', function (app, html, data) {
         }
       },
     },
-  ]);
+  ], {jQuery: false});
 });
