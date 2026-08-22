@@ -21,6 +21,34 @@ Hooks.once('init', function () {
     hint: "forien-copy-environment.settings.max-diff-hint",
     requiresReload: false,
   });
+
+  // Visible Export/Import buttons in the module's section of the Game
+  // Settings window, mirroring the sidebar context menu actions, which are
+  // hard to discover and unusable without a right-click.
+  const actionMenu = (action) => class extends foundry.applications.api.ApplicationV2 {
+    async render() {
+      action();
+      return this;
+    }
+  };
+
+  game.settings.registerMenu(name, 'export', {
+    name: 'forien-copy-environment.menu.export',
+    label: 'forien-copy-environment.menu.export',
+    hint: 'forien-copy-environment.menu.export-hint',
+    icon: 'fas fa-file-export',
+    type: actionMenu(() => Core.exportGameSettings()),
+    restricted: false,
+  });
+
+  game.settings.registerMenu(name, 'import', {
+    name: 'forien-copy-environment.menu.import',
+    label: 'forien-copy-environment.menu.import',
+    hint: 'forien-copy-environment.menu.import-hint',
+    icon: 'fas fa-file-import',
+    type: actionMenu(() => Core.importGameSettingsQuick()),
+    restricted: false,
+  });
 });
 
 Hooks.once('devModeReady', ({registerPackageDebugFlag}) => {

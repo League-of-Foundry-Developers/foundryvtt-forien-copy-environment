@@ -4,7 +4,9 @@
       "copy": "Copy as text",
       "save": "Copy as JSON",
       "export": "Export Settings",
-      "import": "Import Settings"
+      "import": "Import Settings",
+      "export-hint": "Save every changed world, player and client setting to a JSON file.",
+      "import-hint": "Load a previously exported settings file and choose which settings to apply."
     },
     "settings": {
       "max-diff": "Number of characters",
