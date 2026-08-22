@@ -538,6 +538,7 @@ export default class Core extends foundry.appv1.api.FormApplication {
   async processSettings(settings) {
     const updates = [];
     const creates = [];
+    const worldStorage = game.settings.storage.get('world');
     for (const data of settings) {
       const config = game.settings.settings.get(data.key);
       if (config?.scope === 'client') {
@@ -545,82 +546,72 @@ export default class Core extends foundry.appv1.api.FormApplication {
         if (storage) {
           storage.setItem(data.key, data.value);
         }
-      } else if (game.user.isGM) {
-        const existing = game.data.settings.find((s) => s.key === data.key);
+        continue;
+      }
 
-        if (data.key === 'core.compendiumConfiguration') {
-          // The Compendium Configuration setting maps compendiums to folders, and the FolderIDs
-          // change in a new world, so migrating this value as is breaks the mapping.
-          // Attempt to update the IDs to match the new world, but if that fails, just use the
-          // existing value.
-          try {
-            const existingCompendiumMap = JSON.parse(existing.value);
-            const newCompendiumMap = JSON.parse(data.value);
-            const missingEntries = new Map();
+      // User-scoped settings are written for the importing user; world-scoped
+      // settings (including settings not currently registered) require a GM.
+      const isUserScoped = config?.scope === 'user';
+      if (!isUserScoped && !game.user.isGM) {
+        continue;
+      }
+      const user = isUserScoped ? game.userId : null;
+      const existing = worldStorage.getSetting(data.key, user);
 
-            // Replace IDs in the new map with the existing IDs if they exist.
-            for (const [key, value] of Object.entries(newCompendiumMap)) {
-              if (game.folders.get(existingCompendiumMap[key]?.folder)) {
-                newCompendiumMap[key].folder = existingCompendiumMap[key].folder;
-              } else {
-                missingEntries.set(key, value);
-              }
+      if (data.key === 'core.compendiumConfiguration') {
+        // The Compendium Configuration setting maps compendiums to folders, and the FolderIDs
+        // change in a new world, so migrating this value as is breaks the mapping.
+        // Attempt to update the IDs to match the new world, but if that fails, just use the
+        // existing value.
+        try {
+          const existingCompendiumMap = foundry.utils.deepClone(existing.value);
+          const newCompendiumMap = JSON.parse(data.value);
+          const missingEntries = new Map();
+
+          // Replace IDs in the new map with the existing IDs if they exist.
+          for (const [key, value] of Object.entries(newCompendiumMap)) {
+            if (game.folders.get(existingCompendiumMap[key]?.folder)) {
+              newCompendiumMap[key].folder = existingCompendiumMap[key].folder;
+            } else {
+              missingEntries.set(key, value);
             }
-
-            // Add any missing entries to the new map based on the supporting data.
-            for (const [key, value] of missingEntries) {
-              const folder = await this.createFolderRecursive(value?.folder);
-              if (folder?.id) {
-                newCompendiumMap[key].folder = folder.id;
-              }
-            }
-
-            data.value = JSON.stringify(newCompendiumMap);
-          } catch (e) {
-            console.warn('Copy Environment | Could not process compendium configuration, overwriting value rather than merging.', e);
           }
-        }
 
-        if (existing?._id) {
-          updates.push({
-            _id: existing._id,
-            key: data.key,
-            value: data.value,
-          });
-        } else {
-          creates.push({
-            key: data.key,
-            value: data.value,
-          });
+          // Add any missing entries to the new map based on the supporting data.
+          for (const [key, value] of missingEntries) {
+            const folder = await this.createFolderRecursive(value?.folder);
+            if (folder?.id) {
+              newCompendiumMap[key].folder = folder.id;
+            }
+          }
+
+          data.value = JSON.stringify(newCompendiumMap);
+        } catch (e) {
+          console.warn('Copy Environment | Could not process compendium configuration, overwriting value rather than merging.', e);
         }
+      }
+
+      if (existing?._id) {
+        updates.push({
+          _id: existing._id,
+          value: data.value,
+        });
+      } else {
+        creates.push({
+          key: data.key,
+          value: data.value,
+          user: user,
+        });
       }
     }
     try {
       if (updates.length) {
         log(true, `Updating ${updates.length} world settings.`, updates);
-        await SocketInterface.dispatch('modifyDocument', {
-          type: 'Setting',
-          action: 'update',
-          updates: updates,
-          operation: {
-            pack: null,
-            parent: null,
-            updates: updates,
-          }
-        });
+        await Setting.updateDocuments(updates);
       }
       if (creates.length) {
         log(true, `Creating ${creates.length} world settings.`, creates);
-        await SocketInterface.dispatch('modifyDocument', {
-          type: 'Setting',
-          action: 'create',
-          data: creates,
-          operation: {
-            pack: null,
-            parent: null,
-            data: creates,
-          }
-        });
+        await Setting.createDocuments(creates);
       }
       return true;
     } catch (e) {

@@ -112,8 +112,10 @@ export class WorldSetting {
     }
 
     // Return the difference of the original values, not the parsed values.
-    let existingSettings = game.data.settings.find((s) => s.key === this.key);
-    return new Difference(this.key, existingSettings?.value, this.value);
+    // Look up the raw Setting document, checking a user-scoped document for the current user first.
+    const worldStorage = game.settings.storage.get('world');
+    const existingSetting = worldStorage.getSetting(this.key, game.userId) ?? worldStorage.getSetting(this.key);
+    return new Difference(this.key, existingSetting?._source.value, this.value);
   }
 }
 
