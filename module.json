@@ -23,10 +23,10 @@
     "verified": "14"
   },
   "esmodules": [
-    "/scripts/module.js"
+    "scripts/module.js"
   ],
   "styles": [
-    "/styles/module.css"
+    "styles/module.css"
   ],
   "languages": [
     {
