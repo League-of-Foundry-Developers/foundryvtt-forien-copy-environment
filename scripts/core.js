@@ -107,9 +107,11 @@ export default class Core extends foundry.appv1.api.FormApplication {
     });
   }
 
-  // shouldShowCoreModuleWarning returns true if the core module configuration is not selected.
+  // shouldShowCoreModuleWarning returns true only when the module configuration differs
+  // in this import and the user has deselected it. When it is unchanged (same-world
+  // round trip) there is no checkbox and nothing to warn about.
   shouldShowCoreModuleWarning() {
-    return !this.selectedProperties['core.moduleConfiguration'];
+    return this.selectedProperties['core.moduleConfiguration'] === false;
   }
 
   getData() {
