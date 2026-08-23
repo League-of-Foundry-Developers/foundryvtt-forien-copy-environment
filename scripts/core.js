@@ -607,13 +607,16 @@ export default class Core extends foundry.appv1.api.FormApplication {
       }
     }
     try {
+      // The module's own Setting class (imported above) shadows the global Setting
+      // document, so resolve the document class explicitly.
+      const SettingDocument = getDocumentClass('Setting');
       if (updates.length) {
         log(true, `Updating ${updates.length} world settings.`, updates);
-        await Setting.updateDocuments(updates);
+        await SettingDocument.updateDocuments(updates);
       }
       if (creates.length) {
         log(true, `Creating ${creates.length} world settings.`, creates);
-        await Setting.createDocuments(creates);
+        await SettingDocument.createDocuments(creates);
       }
       return true;
     } catch (e) {
