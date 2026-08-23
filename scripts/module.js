@@ -16,7 +16,7 @@ Hooks.once('init', function () {
     scope: 'world',
     config: true,
     type: Number,
-    default: 500,
+    default: 200,
     name: "forien-copy-environment.settings.max-diff",
     hint: "forien-copy-environment.settings.max-diff-hint",
     requiresReload: false,
