@@ -451,6 +451,10 @@ export default class Core extends foundry.appv1.api.FormApplication {
 
   static exportGameSettings() {
     const excludeModules = game.data.modules.filter((m) => m.flags?.noCopyEnvironmentSettings || m.data?.flags?.noCopyEnvironmentSettings).map((m) => m.id) || [];
+    // Off (the default) preserves the original behaviour: settings equal to their
+    // registered default are omitted, so importing that file cannot restore a
+    // setting to its default. On gives full-backup semantics.
+    const includeDefaults = game.settings.get(name, 'include-defaults');
 
     // Return an array with both the world settings and player settings along with their support data.
     let data = Array.prototype.concat(
@@ -462,7 +466,7 @@ export default class Core extends foundry.appv1.api.FormApplication {
             if (value && typeof value === 'object' && v.default && typeof v.default === 'object') {
               sameValue = !Object.keys(foundry.utils.diffObject(v.default, value)).length && !Object.keys(foundry.utils.diffObject(value, v.default)).length;
             }
-            return !sameValue && !excludeModules.some((e) => v.namespace === e);
+            return (includeDefaults || !sameValue) && !excludeModules.some((e) => v.namespace === e);
           } catch (e) {
             console.error(`Copy Environment | Could not export settings for ${v.namespace}.${v.key} due to an error. Please report this as an issue on GitHub.`, e);
             return false;

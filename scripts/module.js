@@ -22,6 +22,16 @@ Hooks.once('init', function () {
     requiresReload: false,
   });
 
+  game.settings.register(name, 'include-defaults', {
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
+    name: "forien-copy-environment.settings.include-defaults",
+    hint: "forien-copy-environment.settings.include-defaults-hint",
+    requiresReload: false,
+  });
+
   // Visible Export/Import buttons in the module's section of the Game
   // Settings window, mirroring the sidebar context menu actions, which are
   // hard to discover and unusable without a right-click.

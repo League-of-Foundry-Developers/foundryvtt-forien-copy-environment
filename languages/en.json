@@ -10,7 +10,9 @@
     },
     "settings": {
       "max-diff": "Comparison preview length",
-      "max-diff-hint": "How many characters of each value to show in the import comparison window. Display-only truncation: it never affects what is exported or imported. Set to 0 to show full values."
+      "max-diff-hint": "How many characters of each value to show in the import comparison window. Display-only truncation: it never affects what is exported or imported. Set to 0 to show full values.",
+      "include-defaults": "Include default-valued settings in exports",
+      "include-defaults-hint": "Off matches the original behaviour: settings equal to their registered default are left out of the export, so importing that file can never restore a setting to its default. Turn on for full-backup exports that can restore everything."
     },
     "title": "Import Settings",
     "intro": "This form allows you to select which world and player settings you want to import.",
