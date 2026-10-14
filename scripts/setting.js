@@ -86,6 +86,12 @@ export class WorldSetting {
     let existingSetting;
     try {
       existingSetting = game.settings.get(namespace, key);
+      // Compare in serialised form, exactly as the export writes values. Typed values
+      // (Color instances, DataModels) never equal their own JSON round-trip and would
+      // otherwise report phantom differences for identical settings.
+      if (existingSetting !== undefined) {
+        existingSetting = JSON.parse(JSON.stringify(existingSetting));
+      }
     } catch (e) {
       // do nothing, it just means the setting isn't registered, likely because the module isn't enabled.
     }
@@ -112,8 +118,10 @@ export class WorldSetting {
     }
 
     // Return the difference of the original values, not the parsed values.
-    let existingSettings = game.data.settings.find((s) => s.key === this.key);
-    return new Difference(this.key, existingSettings?.value, this.value);
+    // Look up the raw Setting document, checking a user-scoped document for the current user first.
+    const worldStorage = game.settings.storage.get('world');
+    const existingSettingDoc = worldStorage.getSetting(this.key, game.userId) ?? worldStorage.getSetting(this.key);
+    return new Difference(this.key, existingSettingDoc?._source.value, this.value);
   }
 }
 
@@ -141,7 +149,16 @@ export class PlayerSetting {
       return this;
     }
 
-    const userData = existingUser;
+    // Compare in serialised form, exactly as the export writes user data. Typed values
+    // (User#color is a Color instance) never equal their own JSON round-trip and would
+    // otherwise report phantom differences for identical players.
+    const userData = JSON.parse(JSON.stringify({
+      avatar: existingUser.avatar,
+      color: existingUser.color,
+      permissions: existingUser.permissions,
+      role: existingUser.role,
+      flags: existingUser.flags,
+    }));
 
     if (setting.core.color !== userData.color) {
       this.playerDifferences.color = new Difference(
@@ -163,7 +180,7 @@ export class PlayerSetting {
       this.playerDifferences.permissions = new Difference(
         'permissions',
         userData.permissions,
-        this.data.core.permissions
+        setting.core.permissions
       );
     }
 

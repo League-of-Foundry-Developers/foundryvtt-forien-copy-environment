@@ -4,11 +4,15 @@
       "copy": "Copy as text",
       "save": "Copy as JSON",
       "export": "Export Settings",
-      "import": "Import Settings"
+      "import": "Import Settings",
+      "export-hint": "Save every changed world, player and client setting to a JSON file.",
+      "import-hint": "Load a previously exported settings file and choose which settings to apply."
     },
     "settings": {
-      "max-diff": "Number of characters",
-      "max-diff-hint": "Maximum number of characters to show per difference. Set to 0 to show all."
+      "max-diff": "Comparison preview length",
+      "max-diff-hint": "How many characters of each value to show in the import comparison window. Display-only truncation: it never affects what is exported or imported. Set to 0 to show full values.",
+      "include-defaults": "Include default-valued settings in exports",
+      "include-defaults-hint": "Off matches the original behaviour: settings equal to their registered default are left out of the export, so importing that file can never restore a setting to its default. Turn on for full-backup exports that can restore everything."
     },
     "title": "Import Settings",
     "intro": "This form allows you to select which world and player settings you want to import.",
@@ -30,7 +34,7 @@
       "noChanges": "There are no differences between the current world and the imported settings.",
       "showSettings": "Show {count} settings",
       "warning": "Warning",
-      "warningMessage": "You have chosen not to import the selected modules. If this was unintentional, enable the \"core.moduleConfiguration\" value above."
+      "warningMessage": "You have deselected \"core.moduleConfiguration\", so the list of enabled modules will not be imported. Tick it above to bring across the exported world’s module selection."
     }
   }
 }

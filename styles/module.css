@@ -29,3 +29,16 @@
 #forien-copy-environment-settings .noflex {
   flex: 0;
 }
+
+/* Game Settings window (Foundry v13+ AppV2), this module's section only.
+   Core gives every row label flex 1 against form-fields flex 2, so a lone
+   checkbox row wastes two thirds of the row while its label wraps; core also
+   right-justifies form-fields, hiding the small checkbox at the far edge.
+   On checkbox rows, give the label the room and keep the checkbox visible
+   right after it. */
+.category-browser section.tab[data-category="forien-copy-environment"] .form-group:has(> .form-fields > input[type="checkbox"]) > label {
+  flex: 2;
+}
+.category-browser section.tab[data-category="forien-copy-environment"] .form-group > .form-fields:has(> input[type="checkbox"]) {
+  justify-content: flex-start;
+}
