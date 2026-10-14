@@ -1,5 +1,21 @@
 # Changelog
 
+## v4.0.0
+
+- Added v14 support.
+- Added Export and Import buttons to the Game Settings window.
+- Added optional (default off) world setting to "Include default-valued settings in exports" to support full setting backup functionality.
+- Added User-scoped settings.
+- Removed several deprecation warnings.
+- Improved handling of several settings related warnings.
+  - A big thank you to ythguanK for their contribution to the module.
+- Added Russian translation by nPocToI4eJI.
+
+## v3.0.0
+
+- Added v13 support.
+- Removed support for v12 and below.
+
 ## v2.2.4
 
 - Added Polish translation by Lioheart.
